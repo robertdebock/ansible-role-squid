@@ -1,0 +1,60 @@
+---
+dependency:
+  name: galaxy
+  options:
+    role-file: requirements.yml
+driver:
+  name: docker
+lint:
+  name: yamllint
+platforms:
+  - name: squid-alpine-edge
+    image: alpine:edge
+    command: sh -c "while true ; do sleep 1 ; done"
+  - name: squid-alpine-latest
+    image: alpine:latest
+    command: sh -c "while true ; do sleep 1 ; done"
+  - name: squid-archlinux
+    image: base/archlinux
+  - name: squid-centos-6
+    image: centos:6
+  - name: squid-centos-latest
+    image: centos:latest
+  - name: squid-debian-latest
+    image: debian:latest
+  - name: squid-debian-stable
+    image: debian:stable
+  - name: squid-debian-unstable
+    image: debian:unstable
+  - name: squid-fedora-latest
+    image: fedora:latest
+  - name: squid-fedora-rawhide
+    image: fedora:rawhide
+  - name: squid-opensuse-leap
+    image: opensuse:leap
+  - name: squid-opensuse-tumbleweed
+    image: opensuse:tumbleweed
+  - name: squid-ubuntu-artful
+    image: ubuntu:artful
+  - name: squid-ubuntu-devel
+    image: ubuntu:devel
+provisioner:
+  name: ansible
+  inventory:
+    group_vars:
+      all:
+        squid_ignore_docker: no
+    host_vars:
+      squid-fedora-rawhide:
+        ansible_python_interpreter: /usr/bin/python3
+  lint:
+    name: ansible-lint
+  config_options:
+    defaults:
+      callback_plugins: /usr/lib/python2.7/site-packages/ara/plugins/callbacks
+scenario:
+  name: default
+verifier:
+  name: goss
+  lint:
+    name: yamllint

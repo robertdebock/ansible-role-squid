@@ -1,0 +1,37 @@
+---
+# vars file for squid
+_squid_packages:
+  default:
+    - squid
+  Alpine:
+    - squid
+  Archlinux:
+    - squid
+  Debian:
+    - squid
+  CentOS:
+    - squid
+  CentOS-7:
+    - squid
+  Fedora:
+    - squid
+  openSUSE Leap:
+    - squid
+  openSUSE Tumbleweed:
+    - squid
+  Ubuntu:
+    - squid
+
+squid_packages: "{{ _squid_packages[ansible_distribution ~ '-' ~ ansible_distribution_major_version] | default(_squid_packages[ansible_distribution] | default(_squid_packages['default'])) }}"
+
+_squid_config_directory:
+  default: /etc
+
+squid_config_directory: "{{ _squid_config_directory[ansible_distribution] | default(_squid_config_directory['default']) }}"
+
+squid_config_file: squid.conf
+
+_squid_service:
+  default: squid
+
+squid_service: "{{ _squid_service[ansible_distribution] | default(_squid_service['default']) }}"

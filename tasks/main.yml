@@ -1,0 +1,39 @@
+---
+# tasks file for squid
+- name: test veriables and environment
+  assert:
+    that:
+      - squid_package_state is defined
+      - squid_package_state is present or
+        squid_package_state is latest or
+        squid_package_state is absent
+      - squid_ignore_docker is defined
+      - squid_ignore_docker or
+        not squid_ignore_docker
+      - squid_port is defined
+      - squid_port >= 1
+      - squid_port <= 65536
+      - squid_cache_dir is defined
+
+- name: install squid
+  package:
+    name: "{{ squid_packages }}"
+    state: "{{ squid_package_state }}"
+  register: squid_install_squid
+  until: squid_install_squid is succeeded
+  retries: 3
+
+- name: configure squid
+  template:
+    src: "{{ squid_config_file }}.j2"
+    dest: "{{ squid_config_directory }}"
+  notify:
+    - restart squid
+
+- name: start and enable squid
+  service:
+    name: "{{ squid_service }}"
+    state: started
+    enabled: yes
+  when:
+    - ansible_virtualization_type != "docker" or squid_ignore_docker
