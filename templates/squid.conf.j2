@@ -7,6 +7,7 @@
 # Example rule allowing access from your local networks.
 # Adapt to list your (internal) IP networks from where browsing
 # should be allowed
+acl localhost src 127.0.0.0/8
 acl localnet src 10.0.0.0/8	# RFC1918 possible internal network
 acl localnet src 172.16.0.0/12	# RFC1918 possible internal network
 acl localnet src 192.168.0.0/16	# RFC1918 possible internal network
@@ -36,8 +37,8 @@ http_access deny !Safe_ports
 http_access deny CONNECT !SSL_ports
 
 # Only allow cachemgr access from localhost
-http_access allow localhost manager
-http_access deny manager
+http_access allow localhost
+http_access deny
 
 # We strongly recommend the following be uncommented to protect innocent
 # web applications running on the proxy server who think the only
