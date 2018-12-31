@@ -75,11 +75,11 @@ refresh_pattern -i (/cgi-bin/|\?) 0	0%	0
 refresh_pattern .		0	20%	4320
 
 {% if squid_cache_replacement_policy is defined %}
-cache_replacement_policy: {{ squid_cache_replacement_policy }}
+cache_replacement_policy {{ squid_cache_replacement_policy }}
 {% endif %}
 
 {% if squid_maximum_object_size_mb is defined %}
-maximum_object_size: {{ squid_maximum_object_size_mb }} MB
+maximum_object_size {{ squid_maximum_object_size_mb }} MB
 {% endif %}
 
 {% if squid_acls is defined %}
