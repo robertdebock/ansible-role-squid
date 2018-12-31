@@ -16,6 +16,19 @@ This example is taken from `molecule/default/playbook.yml`:
   gather_facts: false
   become: true
 
+  vars:
+    squid_port: 3128
+    squid_cache_dir: aufs /var/spool/squid 16000 16 256 max-size=8589934592
+    squid_cache_replacement_policy: heap LFUDA
+    squid_maximum_object_size_mb: 256
+    squid_acls:
+      - name: repmod
+        classifier: url_regex
+        value: '/repomd\.xml$'
+    squid_cache_rules:
+      - acl: repmod
+        decision: deny
+
   roles:
     - role: robertdebock.bootstrap
     - role: robertdebock.squid
@@ -32,21 +45,7 @@ These variables are set in `defaults/main.yml`:
 
 squid_port: 3128
 
-# squid_cache_dir: aufs /var/spool/squid 16000 16 256 max-size=8589934592
 squid_cache_dir: ufs /var/spool/squid 100 16 256
-
-# squid_cache_replacement_policy: heap LFUDA
-
-# squid_maximum_object_size_mb: 256
-
-# squid_acls:
-#   - name: repmod
-#     classifier: url_regex
-#     value: '/repomd\.xml$'
-
-# squid_cache_rules:
-#   - decision: deny
-#     acl: repmod
 
 # To update packages this role places on the system, set `squid_package_state` to `latest`.
 squid_package_state: present
@@ -124,9 +123,13 @@ To test on Amazon EC2, configure [~/.aws/credentials](https://docs.aws.amazon.co
 There are many specific scenarios available, please have a look in the `molecule/` directory.
 
 Run the [ansible-galaxy](https://github.com/ansible/galaxy-lint-rules) and [my](https://github.com/robertdebock/ansible-lint-rules) lint rules if you want your change to be merges:
-```
-ansible-lint -r /path/to/galaxy-lint-rules/rules .
-ansible-lint -r /path/to/ansible-lint-rules/rules .
+
+```shell
+git clone https://github.com/ansible/ansible-lint.git /tmp/ansible-lint
+ansible-lint -r /tmp/ansible-lint/lib/ansiblelint/rules .
+
+git clone https://github.com/robertdebock/ansible-lint /tmp/my-ansible-lint
+ansible-lint -r /tmp/my-ansible-lint/rules .
 ```
 
 License

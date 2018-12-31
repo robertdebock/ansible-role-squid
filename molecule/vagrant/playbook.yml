@@ -1,9 +1,22 @@
 ---
 - name: Converge
   hosts: all
-  become: true
   gather_facts: false
+  become: true
+
+  vars:
+    squid_port: 3128
+    squid_cache_dir: aufs /var/spool/squid 16000 16 256 max-size=8589934592
+    squid_cache_replacement_policy: heap LFUDA
+    squid_maximum_object_size_mb: 256
+    squid_acls:
+      - name: repmod
+        classifier: url_regex
+        value: '/repomd\.xml$'
+    squid_cache_rules:
+      - acl: repmod
+        decision: deny
 
   roles:
-    - robertdebock.bootstrap
-    - ansible-role-squid
+    - role: robertdebock.bootstrap
+    - role: ansible-role-squid

@@ -31,6 +31,25 @@
     - test squid configuration
     - restart squid
 
+- name: create group
+  group:
+    name: "{{ squid_group }}"
+    system: yes
+    state: present
+
+- name: create user
+  user:
+    name: "{{ squid_user }}"
+    group: "{{ squid_group }}"
+    create_home: no
+    state: present
+    home: /var/spool/squid
+    shell: /sbin/nologin
+    system: yes
+
+- name: flush_handlers
+  meta: flush_handlers
+
 - name: start and enable squid
   service:
     name: "{{ squid_service }}"
