@@ -1,5 +1,9 @@
 ---
 # handlers file for squid
+- name: test squid configuration
+  command: squid -k parse
+  changed_when: no
+
 - name: restart squid
   service:
     name: "{{ squid_service }}"

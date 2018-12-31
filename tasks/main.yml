@@ -28,6 +28,7 @@
     src: "{{ squid_config_file }}.j2"
     dest: "{{ squid_config_directory }}/{{ squid_config_file }}"
   notify:
+    - test squid configuration
     - restart squid
 
 - name: start and enable squid
