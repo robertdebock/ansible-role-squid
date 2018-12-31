@@ -32,21 +32,21 @@ These variables are set in `defaults/main.yml`:
 
 squid_port: 3128
 
-#squid_cache_dir: aufs /var/spool/squid 16000 16 256 max-size=8589934592
+# squid_cache_dir: aufs /var/spool/squid 16000 16 256 max-size=8589934592
 squid_cache_dir: ufs /var/spool/squid 100 16 256
 
-squid_cache_replacement_policy: heap LFUDA
+# squid_cache_replacement_policy: heap LFUDA
 
-squid_maximum_object_size_mb: 256
+# squid_maximum_object_size_mb: 256
 
-squid_acls:
-  - name: repmod
-    classifier: url_regex
-    value: "/repomd\.xml$"
+# squid_acls:
+#   - name: repmod
+#     classifier: url_regex
+#     value: '/repomd\.xml$'
 
-squid_cache_rules:
-  - decision: deny
-    acl: repmod
+# squid_cache_rules:
+#   - decision: deny
+#     acl: repmod
 
 # To update packages this role places on the system, set `squid_package_state` to `latest`.
 squid_package_state: present
