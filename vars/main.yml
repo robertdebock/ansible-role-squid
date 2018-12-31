@@ -25,7 +25,7 @@ _squid_packages:
 squid_packages: "{{ _squid_packages[ansible_distribution ~ '-' ~ ansible_distribution_major_version] | default(_squid_packages[ansible_distribution] | default(_squid_packages['default'])) }}"
 
 _squid_config_directory:
-  default: /etc
+  default: /etc/squid
 
 squid_config_directory: "{{ _squid_config_directory[ansible_distribution] | default(_squid_config_directory['default']) }}"
 

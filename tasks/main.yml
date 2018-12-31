@@ -26,7 +26,7 @@
 - name: configure squid
   template:
     src: "{{ squid_config_file }}.j2"
-    dest: "{{ squid_config_directory }}"
+    dest: "{{ squid_config_directory }}/{{ squid_config_file }}"
   notify:
     - restart squid
 
