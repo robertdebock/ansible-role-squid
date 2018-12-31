@@ -4,9 +4,9 @@
   assert:
     that:
       - squid_package_state is defined
-      - squid_package_state is present or
-        squid_package_state is latest or
-        squid_package_state is absent
+      - squid_package_state == "present" or
+        squid_package_state == "latest" or
+        squid_package_state == "absent"
       - squid_ignore_docker is defined
       - squid_ignore_docker or
         not squid_ignore_docker
