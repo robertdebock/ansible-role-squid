@@ -15,6 +15,14 @@
       - squid_port <= 65536
       - squid_cache_dir is defined
 
+- name: install requirements
+  package:
+    name: "{{ squid_requirements }}"
+    state: "{{ squid_package_state }}"
+  register: squid_install_requirements
+  until: squid_install_requirements is succeeded
+  retries: 3
+
 - name: install squid
   package:
     name: "{{ squid_packages }}"
