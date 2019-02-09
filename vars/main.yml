@@ -1,10 +1,11 @@
 ---
 # vars file for squid
 _squid_requirements:
+  default: []
   Archlinux:
     - libxml2
 
-squid_requirements: "{{ _squid_requirements[ansible_distribution] | default(omit) }}"
+squid_requirements: "{{ _squid_requirements[ansible_distribution] | default(_squid_requirements['default']) }}"
 
 squid_packages:
   - squid

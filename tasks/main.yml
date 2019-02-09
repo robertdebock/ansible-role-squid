@@ -19,6 +19,9 @@
   package:
     name: "{{ squid_requirements }}"
     state: "{{ squid_package_state }}"
+  when:
+    - squid_requirements is defined
+
   register: squid_install_requirements
   until: squid_install_requirements is succeeded
   retries: 3
