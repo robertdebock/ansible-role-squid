@@ -34,8 +34,10 @@ platforms:
     image: opensuse:leap
   - name: squid-opensuse-tumbleweed
     image: opensuse:tumbleweed
-  - name: squid-ubuntu-artful
-    image: ubuntu:artful
+  - name: squid-ubuntu-latest
+    image: ubuntu:latest
+  - name: squid-ubuntu-rolling
+    image: ubuntu:rolling
   - name: squid-ubuntu-devel
     image: ubuntu:devel
 provisioner:
