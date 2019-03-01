@@ -32,8 +32,6 @@ platforms:
     image: fedora:rawhide
   - name: squid-opensuse-leap
     image: opensuse:leap
-  - name: squid-opensuse-tumbleweed
-    image: opensuse:tumbleweed
   - name: squid-ubuntu-latest
     image: ubuntu:latest
   - name: squid-ubuntu-rolling
