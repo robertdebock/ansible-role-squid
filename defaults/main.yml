@@ -4,11 +4,3 @@
 squid_port: 3128
 
 squid_cache_dir: ufs /var/spool/squid 100 16 256
-
-# To update packages this role places on the system, set `squid_package_state` to `latest`.
-squid_package_state: present
-
-# Some Docker containers do not allow managing services, rebooting and writing
-# to some locations in /etc. The role skips tasks that will typically fail in
-# Docker. With this parameter you can tell the role to -not- skip these tasks.
-squid_ignore_docker: yes

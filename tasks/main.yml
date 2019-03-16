@@ -3,13 +3,6 @@
 - name: test veriables and environment
   assert:
     that:
-      - squid_package_state is defined
-      - squid_package_state == "present" or
-        squid_package_state == "latest" or
-        squid_package_state == "absent"
-      - squid_ignore_docker is defined
-      - squid_ignore_docker or
-        not squid_ignore_docker
       - squid_port is defined
       - squid_port >= 1
       - squid_port <= 65536
@@ -18,7 +11,7 @@
 - name: install requirements
   package:
     name: "{{ squid_requirements }}"
-    state: "{{ squid_package_state }}"
+    state: present
   when:
     - squid_requirements is defined
 
@@ -29,7 +22,7 @@
 - name: install squid
   package:
     name: "{{ squid_packages }}"
-    state: "{{ squid_package_state }}"
+    state: present
   register: squid_install_squid
   until: squid_install_squid is succeeded
   retries: 3
@@ -67,4 +60,4 @@
     state: started
     enabled: yes
   when:
-    - ansible_virtualization_type != "docker" or squid_ignore_docker
+    - ansible_virtualization_type != "docker"
