@@ -13,8 +13,20 @@ This example is taken from `molecule/default/playbook.yml`:
 ---
 - name: Converge
   hosts: all
-  gather_facts: false
-  become: true
+  become: yes
+  gather_facts: yes
+
+  roles:
+    - robertdebock.squid
+```
+
+The machine you are running this on, may need to be prepared. Tests have been done on machines prepared by this playbook:
+```yaml
+---
+- name: Prepare
+  hosts: all
+  gather_facts: no
+  become: yes
 
   vars:
     squid_port: 3128
@@ -31,8 +43,6 @@ This example is taken from `molecule/default/playbook.yml`:
 
   roles:
     - role: robertdebock.bootstrap
-    - role: robertdebock.squid
-
 ```
 
 Also see a [full explanation and example](https://robertdebock.nl/how-to-use-these-roles.html) on how to use these roles.
@@ -48,15 +58,6 @@ These variables are set in `defaults/main.yml`:
 squid_port: 3128
 
 squid_cache_dir: ufs /var/spool/squid 100 16 256
-
-# To update packages this role places on the system, set `squid_package_state` to `latest`.
-squid_package_state: present
-
-# Some Docker containers do not allow managing services, rebooting and writing
-# to some locations in /etc. The role skips tasks that will typically fail in
-# Docker. With this parameter you can tell the role to -not- skip these tasks.
-squid_ignore_docker: yes
-
 ```
 
 Requirements
