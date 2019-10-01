@@ -5,7 +5,7 @@ _squid_requirements:
   Archlinux:
     - libxml2
 
-squid_requirements: "{{ _squid_requirements[ansible_distribution] | default(_squid_requirements['default']) }}"
+squid_requirements: "{{ _squid_requirements[ansible_os_family] | default(_squid_requirements['default']) }}"
 
 squid_packages:
   - squid
@@ -14,14 +14,8 @@ squid_user: squid
 
 squid_group: squid
 
-_squid_config_directory:
-  default: /etc/squid
-
-squid_config_directory: "{{ _squid_config_directory[ansible_distribution] | default(_squid_config_directory['default']) }}"
+squid_config_directory: /etc/squid
 
 squid_config_file: squid.conf
 
-_squid_service:
-  default: squid
-
-squid_service: "{{ _squid_service[ansible_distribution] | default(_squid_service['default']) }}"
+squid_service: squid

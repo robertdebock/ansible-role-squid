@@ -1,13 +1,5 @@
 ---
 # tasks file for squid
-- name: test veriables and environment
-  assert:
-    that:
-      - squid_port is defined
-      - squid_port >= 1
-      - squid_port <= 65536
-      - squid_cache_dir is defined
-
 - name: install requirements
   package:
     name: "{{ squid_requirements }}"
