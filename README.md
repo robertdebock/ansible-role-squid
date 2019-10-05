@@ -21,7 +21,18 @@ This example is taken from `molecule/resources/playbook.yml`:
   gather_facts: yes
 
   roles:
-    - robertdebock.squid
+    - role: robertdebock.squid
+      squid_port: 3128
+      squid_cache_dir: aufs /var/spool/squid 16000 16 256 max-size=8589934592
+      squid_cache_replacement_policy: heap LFUDA
+      squid_maximum_object_size_mb: 256
+      squid_acls:
+        - name: repmod
+          classifier: url_regex
+          value: '/repomd\.xml$'
+      squid_cache_rules:
+        - acl: repmod
+          decision: deny
 ```
 
 The machine you are running this on, may need to be prepared.
@@ -32,21 +43,9 @@ The machine you are running this on, may need to be prepared.
   gather_facts: no
   become: yes
 
-  vars:
-    squid_port: 3128
-    squid_cache_dir: aufs /var/spool/squid 16000 16 256 max-size=8589934592
-    squid_cache_replacement_policy: heap LFUDA
-    squid_maximum_object_size_mb: 256
-    squid_acls:
-      - name: repmod
-        classifier: url_regex
-        value: '/repomd\.xml$'
-    squid_cache_rules:
-      - acl: repmod
-        decision: deny
-
   roles:
     - role: robertdebock.bootstrap
+    - role: robertdebock.code_dependencies
 ```
 
 Also see a [full explanation and example](https://robertdebock.nl/how-to-use-these-roles.html) on how to use these roles.
@@ -75,6 +74,7 @@ The following roles can be installed to ensure all requirements are met, using `
 ```yaml
 ---
 - robertdebock.bootstrap
+- robertdebock.core_dependencies
 
 ```
 
