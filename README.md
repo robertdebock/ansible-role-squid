@@ -45,7 +45,7 @@ The machine you are running this on, may need to be prepared.
 
   roles:
     - role: robertdebock.bootstrap
-    - role: robertdebock.code_dependencies
+    - role: robertdebock.core_dependencies
 ```
 
 Also see a [full explanation and example](https://robertdebock.nl/how-to-use-these-roles.html) on how to use these roles.
