@@ -8,57 +8,14 @@ lint:
 driver:
   name: docker
 platforms:
-  - name: squid-alpine-edge
-    image: alpine:edge
-    pre_build_image: yes
-    command: sh -c "while true ; do sleep 1 ; done"
-  - name: squid-alpine-latest
-    image: alpine:latest
-    pre_build_image: yes
-    command: sh -c "while true ; do sleep 1 ; done"
-  - name: squid-archlinux
-    image: archlinux/base
-    pre_build_image: yes
-  - name: squid-centos-6
-    image: centos:6
-    pre_build_image: yes
-  - name: squid-centos-latest
-    image: centos:latest
-    pre_build_image: yes
-  - name: squid-debian-stable
-    image: debian:stable
-    pre_build_image: yes
-  - name: squid-debian-unstable
-    image: debian:unstable
-    pre_build_image: yes
-  - name: squid-fedora-latest
-    image: fedora:latest
-    pre_build_image: yes
-  - name: squid-fedora-rawhide
-    image: fedora:rawhide
-    pre_build_image: yes
-  - name: squid-opensuse-leap
-    image: opensuse/leap
-    pre_build_image: yes
-  - name: squid-ubuntu-latest
-    image: ubuntu:latest
-    pre_build_image: yes
-  - name: squid-ubuntu-rolling
-    image: ubuntu:rolling
-    pre_build_image: yes
-  - name: squid-ubuntu-devel
-    image: ubuntu:devel
+  - name: "${image:-default}-${TOX_ENVNAME:-default}"
+    image: "${namespace}${image:-docker-fedora-systemd}:${tag:-latest}"
+    command: sh -c "while true ; do sleep 30 ; done"
     pre_build_image: yes
 provisioner:
   name: ansible
   playbooks:
-    prepare: ../resources/prepare.yml
-    converge: ../resources/playbook.yml
-  inventory:
-    host_vars:
-      squid-fedora-latest:
-        ansible_python_interpreter: /usr/bin/python3
-      squid-fedora-rawhide:
-        ansible_python_interpreter: /usr/bin/python3
+    prepare: prepare.yml
+    converge: playbook.yml
 scenario:
   name: default
