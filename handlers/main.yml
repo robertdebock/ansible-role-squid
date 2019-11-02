@@ -8,5 +8,3 @@
   service:
     name: "{{ squid_service }}"
     state: restarted
-  when:
-    - ansible_virtualization_type != "docker"
