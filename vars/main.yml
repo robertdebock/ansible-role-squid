@@ -10,9 +10,17 @@ squid_requirements: "{{ _squid_requirements[ansible_os_family] | default(_squid_
 squid_packages:
   - squid
 
-squid_user: squid
+_squid_user:
+  default: squid
+  Debian: proxy
 
-squid_group: squid
+squid_user: "{{ _squid_user[ansible_os_family] | default(_squid_user['default']) }}"
+
+_squid_group:
+  default: squid
+  Debian: proxy
+
+squid_group: "{{ _squid_group[ansible_os_family] | default(_squid_group['default']) }}"
 
 squid_config_directory: /etc/squid
 

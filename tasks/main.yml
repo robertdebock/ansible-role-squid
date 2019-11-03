@@ -43,6 +43,13 @@
     shell: /sbin/nologin
     system: yes
 
+- name: create cache directory
+  file:
+    path: /var/spool/squid
+    state: directory
+    owner: "{{ squid_user }}"
+    group: "{{ squid_group }}"
+
 - name: flush_handlers
   meta: flush_handlers
 
