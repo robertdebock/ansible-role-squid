@@ -41,6 +41,5 @@ galaxy_info:
     - proxy
     - rhel
     - squid
-    - ubuntu
 
 dependencies: []
