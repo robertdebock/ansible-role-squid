@@ -39,7 +39,6 @@ galaxy_info:
     - archlinux
     - centos
     - proxy
-    - rhel
     - squid
 
 dependencies: []
