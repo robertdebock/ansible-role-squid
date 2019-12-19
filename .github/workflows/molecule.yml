@@ -8,5 +8,5 @@ jobs:
     steps:
       - name: checkout
         uses: actions/checkout@v1
-      - name: Molecule action@master
-        uses: robertdebock/molecule-action
+      - name: Molecule action
+        uses: robertdebock/molecule-action@master
