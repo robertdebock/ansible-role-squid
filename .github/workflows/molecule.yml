@@ -9,4 +9,4 @@ jobs:
       - name: checkout
         uses: actions/checkout@v1
       - name: Molecule action
-        uses: robertdebock/molecule-action@0.0.5
+        uses: robertdebock/molecule-action
