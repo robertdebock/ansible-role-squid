@@ -15,11 +15,13 @@ jobs:
           - debian
           - centos
           - fedora
-            tag:
-              - latest
-              - rawhide
           - opensuse
           - ubuntu
+        include:
+          - image: alpine
+            tag: latest
+          - image: alpine
+            tag: edge
     steps:
       - name: checkout
         uses: actions/checkout@v2
