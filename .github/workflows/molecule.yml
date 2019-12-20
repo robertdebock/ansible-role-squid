@@ -25,5 +25,5 @@ jobs:
           path: "${{ github.repository }}"
       - name: molecule
         uses: robertdebock/molecule-action@master
-          with:
-            image: ${{ matrix.image }}
+        with:
+          image: ${{ matrix.image }}
