@@ -1,5 +1,3 @@
 #
 # Ansible managed
 #
-exclude_paths:
-  - ./.github/workflows
