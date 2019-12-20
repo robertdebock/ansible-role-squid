@@ -15,6 +15,9 @@ jobs:
           - debian
           - centos
           - fedora
+            tag:
+              - latest
+              - rawhide
           - opensuse
           - ubuntu
     steps:
