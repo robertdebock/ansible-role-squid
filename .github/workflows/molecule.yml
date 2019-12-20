@@ -4,6 +4,17 @@ name: CI
 on:
   - push
 
+strategy:
+  matrix:
+    image:
+      - alpine
+      - amazonlinux
+      - debian
+      - centos
+      - fedora
+      - opensuse
+      - ubuntu
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -14,3 +25,5 @@ jobs:
           path: "${{ github.repository }}"
       - name: molecule
         uses: robertdebock/molecule-action@master
+          with:
+            image: ${{ matrix.image }}
