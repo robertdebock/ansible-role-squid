@@ -9,7 +9,5 @@ jobs:
     steps:
       - name: checkout
         uses: actions/checkout@v2
-        with:
-          path: ${GITHUB_REPOSITORY}
       - name: molecule
         uses: robertdebock/molecule-action@master
