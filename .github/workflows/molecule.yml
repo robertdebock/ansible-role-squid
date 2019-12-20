@@ -4,20 +4,19 @@ name: CI
 on:
   - push
 
-strategy:
-  matrix:
-    image:
-      - alpine
-      - amazonlinux
-      - debian
-      - centos
-      - fedora
-      - opensuse
-      - ubuntu
-
 jobs:
   build:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        image:
+          - alpine
+          - amazonlinux
+          - debian
+          - centos
+          - fedora
+          - opensuse
+          - ubuntu
     steps:
       - name: checkout
         uses: actions/checkout@v2
