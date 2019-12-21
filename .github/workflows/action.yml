@@ -96,6 +96,7 @@ jobs:
           image: ${{ matrix.image }}
   release:
     runs-on: ubuntu-latest
+    steps:
       - name: galaxy
         uses: robertdebock/galaxy-action@master
         with:
