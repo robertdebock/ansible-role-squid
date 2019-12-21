@@ -94,6 +94,8 @@ jobs:
         uses: robertdebock/molecule-action@1.0.0
         with:
           image: ${{ matrix.image }}
+  release:
+    runs-on: ubuntu-latest
       - name: galaxy
         uses: robertdebock/galaxy-action@master
         with:
