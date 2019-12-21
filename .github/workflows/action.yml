@@ -95,6 +95,8 @@ jobs:
         with:
           image: ${{ matrix.image }}
   release:
+    needs:
+      - test
     runs-on: ubuntu-latest
     steps:
       - name: galaxy
