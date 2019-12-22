@@ -3,5 +3,5 @@
 # Ansible managed
 #
 repository:
-  description: Install and configure squid on your system.
+  description: Install and configure squid on your system
   homepage: https://robertdebock.nl/

@@ -4,7 +4,7 @@ squid
 <img src="https://docs.ansible.com/ansible-tower/3.2.4/html_ja/installandreference/_static/images/logo_invert.png" width="10%" height="10%" alt="Ansible logo" align="right"/>
 <a href="https://travis-ci.org/robertdebock/ansible-role-squid"> <img src="https://travis-ci.org/robertdebock/ansible-role-squid.svg?branch=master" alt="Build status"/></a> <img src="https://img.shields.io/ansible/role/d/35939"/> <img src="https://img.shields.io/ansible/quality/35939"/>
 
-Install and configure squid on your system.
+Install and configure squid on your system
 
 Example Playbook
 ----------------
