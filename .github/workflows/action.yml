@@ -94,6 +94,7 @@ jobs:
         uses: robertdebock/molecule-action@1.0.0
         with:
           image: ${{ matrix.image }}
+          options: parallel
   release:
     needs:
       - test
