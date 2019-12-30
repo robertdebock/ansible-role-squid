@@ -22,7 +22,8 @@ jobs:
         uses: robertdebock/molecule-action@1.1.1
         with:
           image: ${{ matrix.image }}
-          entrypoint: /usr/local/bin/molecule syntax
+          entrypoint: /usr/local/bin/molecule
+          args: syntax
   lint:
     runs-on: ubuntu-latest
     steps:
@@ -34,7 +35,8 @@ jobs:
         uses: robertdebock/molecule-action@1.1.1
         with:
           image: ${{ matrix.image }}
-          entrypoint: /usr/local/bin/molecule lint
+          entrypoint: /usr/local/bin/molecule
+          args: lint
   test:
     needs:
       - syntax
