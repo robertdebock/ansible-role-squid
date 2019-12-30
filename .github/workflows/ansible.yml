@@ -114,12 +114,3 @@ jobs:
         with:
           image: ${{ matrix.image }}
           options: "--parallel all"
-  release:
-    needs:
-      - test
-    runs-on: ubuntu-latest
-    steps:
-      - name: galaxy
-        uses: robertdebock/galaxy-action@1.0.0
-        with:
-          galaxy_api_key: ${{ secrets.galaxy_api_key }}
