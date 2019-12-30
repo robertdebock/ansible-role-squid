@@ -6,7 +6,7 @@
 name: Ansible Molecule
 
 on:
-  - push
+  push
     tags_ignore:
       - '*'
 
