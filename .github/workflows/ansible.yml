@@ -24,7 +24,6 @@ jobs:
           args: lint
   test:
     needs:
-      - syntax
       - lint
     runs-on: ubuntu-latest
     strategy:
