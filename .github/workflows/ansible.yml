@@ -11,17 +11,6 @@ on:
       - '*'
 
 jobs:
-  syntax:
-    runs-on: ubuntu-latest
-    steps:
-      - name: checkout
-        uses: actions/checkout@v2
-      - name: molecule
-        uses: robertdebock/molecule-action@1.1.1
-        with:
-          image: ${{ matrix.image }}
-          entrypoint: /usr/local/bin/molecule
-          args: syntax
   lint:
     runs-on: ubuntu-latest
     steps:
