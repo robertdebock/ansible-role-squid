@@ -3,13 +3,38 @@
 # Ansible managed
 #
 
-name: GitHub Action
+name: Ansible Molecule
 
 on:
   - push
+    tags_ignore:
+      - '*'
 
 jobs:
+  syntax:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v2
+        with:
+          path: "${{ github.repository }}"      - name: molecule
+        uses: robertdebock/molecule-action@1.1.1
+        with:
+          image: ${{ matrix.image }}          entrypoint: molecule syntax
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v2
+        with:
+          path: "${{ github.repository }}"      - name: molecule
+        uses: robertdebock/molecule-action@1.1.1
+        with:
+          image: ${{ matrix.image }}          entrypoint: molecule lint
   test:
+    needs:
+      - syntax
+      - lint
     runs-on: ubuntu-latest
     strategy:
       matrix:
