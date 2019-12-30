@@ -17,20 +17,24 @@ jobs:
       - name: checkout
         uses: actions/checkout@v2
         with:
-          path: "${{ github.repository }}"      - name: molecule
+          path: "${{ github.repository }}"
+      - name: molecule
         uses: robertdebock/molecule-action@1.1.1
         with:
-          image: ${{ matrix.image }}          entrypoint: molecule syntax
+          image: ${{ matrix.image }}
+          entrypoint: molecule syntax
   lint:
     runs-on: ubuntu-latest
     steps:
       - name: checkout
         uses: actions/checkout@v2
         with:
-          path: "${{ github.repository }}"      - name: molecule
+          path: "${{ github.repository }}"
+      - name: molecule
         uses: robertdebock/molecule-action@1.1.1
         with:
-          image: ${{ matrix.image }}          entrypoint: molecule lint
+          image: ${{ matrix.image }}
+          entrypoint: molecule lint
   test:
     needs:
       - syntax
