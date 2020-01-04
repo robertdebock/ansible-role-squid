@@ -1,16 +1,5 @@
 ---
 # tasks file for squid
-- name: install requirements
-  package:
-    name: "{{ squid_requirements }}"
-    state: present
-  when:
-    - squid_requirements is defined
-
-  register: squid_install_requirements
-  until: squid_install_requirements is succeeded
-  retries: 3
-
 - name: install squid
   package:
     name: "{{ squid_packages }}"
