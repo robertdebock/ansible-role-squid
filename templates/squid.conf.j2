@@ -69,3 +69,7 @@ acl {{ acl.name }} {{ acl.classifier }} {{ acl.value }}
 cache {{ rule.decision }} {{ rule.acl }}
 {% endfor %}
 {% endif %}
+
+{% if squid_conf_include_dir is defined %}
+include {{ squid_conf_include_dir }}/*.conf
+{% endif %}

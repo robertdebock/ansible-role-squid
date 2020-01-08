@@ -39,6 +39,22 @@
     owner: "{{ squid_user }}"
     group: "{{ squid_group }}"
 
+- name: create config include directory
+  file:
+    path: "{{ squid_conf_include_dir }}"
+    state: directory
+    owner: "{{ squid_user }}"
+    group: "{{ squid_group }}"
+  when: squid_conf_include_dir is defined
+
+- name: create dummy config file
+  copy:
+    dest: "{{ squid_conf_include_dir }}/dummy.conf"
+    content: "# prevent empty dir breaking squid"
+    owner: "{{ squid_user }}"
+    group: "{{ squid_group }}"
+  when: squid_conf_include_dir is defined
+
 - name: flush_handlers
   meta: flush_handlers
 
@@ -47,3 +63,4 @@
     name: "{{ squid_service }}"
     state: started
     enabled: yes
+
