@@ -67,8 +67,8 @@ jobs:
       - name: molecule
         uses: robertdebock/molecule-action@1.1.3
         with:
-          image: ${{ matrix.image }}
-          tag: ${{ matrix.tag }}
+          image: ${{ matrix.config.image }}
+          tag: ${{ matrix.config.tag }}
           options: "--parallel all"
         env:
           TOX_PARALLEL_NO_SPINNER: 1
