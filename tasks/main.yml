@@ -1,5 +1,8 @@
 ---
 # tasks file for squid
+- name: include assert.yml
+  include_tasks: assert.yml
+
 - name: install squid
   package:
     name: "{{ squid_packages }}"
