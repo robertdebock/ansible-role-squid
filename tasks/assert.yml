@@ -23,6 +23,6 @@
       - squid_cache_dir.split(" ")[3] | int > 0
       - squid_cache_dir.split(" ")[4] | int
       - squid_cache_dir.split(" ")[4] | int > 0
-  fail_msg: "The null storage driver does not allow arguments to be set."
+    fail_msg: "The null storage driver does not allow arguments to be set."
   when:
     - squid_cache_dir.split(" ")[0] != "null"
