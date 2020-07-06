@@ -1,5 +1,6 @@
 ---
 # vars file for squid
+
 squid_packages:
   - squid
 
