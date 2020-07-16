@@ -7,9 +7,6 @@
   package:
     name: "{{ squid_packages }}"
     state: present
-  register: squid_install_squid
-  until: squid_install_squid is succeeded
-  retries: 3
 
 - name: configure squid
   template:
