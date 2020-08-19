@@ -6,6 +6,7 @@
       - squid_port | int
       - squid_port | int > 0
       - squid_port | int < 65536
+    quiet: yes
 
 - name: test if squid_cache_dir is set correctly
   assert:
@@ -13,6 +14,7 @@
       - squid_cache_dir is defined
       - squid_cache_dir | length > 0
       - squid_cache_dir.split(" ")[0] in ["ufs", "aufs", "diskd", "rock", "null"]
+    quiet: yes
 
 - name: test if squid_cache_dir is set correctly when no null driver is used
   assert:
@@ -23,6 +25,7 @@
       - squid_cache_dir.split(" ")[3] | int > 0
       - squid_cache_dir.split(" ")[4] | int
       - squid_cache_dir.split(" ")[4] | int > 0
+    quiet: yes
     fail_msg: "The null storage driver does not allow arguments to be set."
   when:
     - squid_cache_dir.split(" ")[0] != "null"
