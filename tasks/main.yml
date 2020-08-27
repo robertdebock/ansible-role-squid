@@ -12,6 +12,7 @@
   template:
     src: "{{ squid_config_file }}.j2"
     dest: "{{ squid_config_directory }}/{{ squid_config_file }}"
+    mode: "0644"
   notify:
     - test squid configuration
     - restart squid
@@ -38,6 +39,7 @@
     state: directory
     owner: "{{ squid_user }}"
     group: "{{ squid_group }}"
+    mode: "0750"
 
 - name: flush_handlers
   meta: flush_handlers
