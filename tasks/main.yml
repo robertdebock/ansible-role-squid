@@ -3,20 +3,6 @@
 - name: include assert.yml
   include_tasks: assert.yml
 
-- name: install squid
-  package:
-    name: "{{ squid_packages }}"
-    state: present
-
-- name: configure squid
-  template:
-    src: "{{ squid_config_file }}.j2"
-    dest: "{{ squid_config_directory }}/{{ squid_config_file }}"
-    mode: "0644"
-  notify:
-    - test squid configuration
-    - restart squid
-
 - name: create group
   group:
     name: "{{ squid_group }}"
@@ -32,6 +18,21 @@
     home: /var/spool/squid
     shell: /sbin/nologin
     system: yes
+
+- name: install squid
+  package:
+    name: "{{ squid_packages }}"
+    state: present
+
+- name: configure squid
+  template:
+    src: "{{ squid_config_file }}.j2"
+    dest: "{{ squid_config_directory }}/{{ squid_config_file }}"
+    mode: "0644"
+  notify:
+    - test squid configuration
+    - restart squid
+
 
 - name: create cache directory
   file:
