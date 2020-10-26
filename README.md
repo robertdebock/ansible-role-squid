@@ -49,7 +49,7 @@ Example with http_access.
           value: '10.10.10.0/24'
       squid_http_access:
         - state: allow
-          acl:
+          acls:
             - production
             - ubuntu
 ```
