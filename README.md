@@ -31,6 +31,29 @@ This example is taken from `molecule/resources/converge.yml` and is tested on ea
           decision: deny
 ```
 
+Example with http_access.
+```yaml
+---
+- name: Allow access to Ubuntu repos from production subnet
+  hosts: all
+  become: yes
+  gather_facts: yes
+  roles:
+    - role: robertdebock.squid
+      squid_acls:
+        - name: ubuntu
+          classifier: dstdomain
+          value: 'security.ubuntu.com eu-west-1.ec2.archive.ubuntu.com'
+        - name: production
+          classifier: src
+          value: '10.10.10.0/24'
+      squid_http_access:
+        - state: allow
+          acl:
+            - production
+            - ubuntu
+```
+
 The machine may need to be prepared using `molecule/resources/prepare.yml`:
 ```yaml
 ---
