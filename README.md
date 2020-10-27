@@ -22,13 +22,6 @@ This example is taken from `molecule/resources/converge.yml` and is tested on ea
       squid_cache_dir: aufs /var/spool/squid 16000 16 256 max-size=8589934592
       squid_cache_replacement_policy: heap LFUDA
       squid_maximum_object_size_mb: 256
-      squid_acls:
-        - name: repmod
-          classifier: url_regex
-          value: '/repomd\.xml$'
-      squid_cache_rules:
-        - acl: repmod
-          decision: deny
 ```
 
 The machine may need to be prepared using `molecule/resources/prepare.yml`:
@@ -69,6 +62,76 @@ These variables are set in `defaults/main.yml`:
 squid_port: 3128
 
 squid_cache_dir: ufs /var/spool/squid 100 16 256
+
+# This is the default set of ACLS.
+squid_acls:
+  - name: localhost
+    classifier: src
+    value: 127.0.0.0/8
+  - name: localnet
+    classifier: src
+    value: 10.0.0.0/8
+  - name: localnet
+    classifier: src
+    value: 172.16.0.0/12
+  - name: localnet
+    classifier: src
+    value: 192.168.0.0/16
+  - name: localnet
+    classifier: src
+    value: "fc00::/7"
+  - name: localnet
+    classifier: src
+    value: "fe80::/10"
+  - name: SSL_ports
+    classifier: port
+    value: 443
+  - name: Safe_ports
+    classifier: port
+    value: 80
+  - name: Safe_ports
+    classifier: port
+    value: 21
+  - name: Safe_ports
+    classifier: port
+    value: 443
+  - name: Safe_ports
+    classifier: port
+    value: 70
+  - name: Safe_ports
+    classifier: port
+    value: 210
+  - name: Safe_ports
+    classifier: port
+    value: 1025-65535
+  - name: Safe_ports
+    classifier: port
+    value: 280
+  - name: Safe_ports
+    classifier: port
+    value: 488
+  - name: Safe_ports
+    classifier: port
+    value: 591
+  - name: Safe_ports
+    classifier: port
+    value: 777
+  - name: CONNECT
+    classifier: method
+    value: CONNECT
+
+# This is how to allow (or deny) access to specified ACLs.
+squid_cache_rules:
+  - acl: "!Safe_ports"
+    decision: deny
+  - acl: "CONNECT !SSL_Ports"
+    decision: deny
+  - acl: localhost
+    decision: allow
+  - acl: localnet
+    decision: allow
+  - acl: all
+    decision: deny
 ```
 
 ## [Requirements](#requirements)
@@ -152,6 +215,11 @@ image="debian" tag="stable" tox
 
 Apache-2.0
 
+## [Contributors](#contributors)
+
+I'd like to thank everybody that made contributions to this repository. It motivates me, improves the code and is just fun to collaborate.
+
+- [meons](https://github.com/meons)
 
 ## [Author Information](#author-information)
 

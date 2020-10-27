@@ -29,3 +29,66 @@
     fail_msg: "The null storage driver does not allow arguments to be set."
   when:
     - squid_cache_dir.split(" ")[0] != "null"
+
+- name: test if squid_acls is set correctly
+  assert:
+    that:
+      - squid_acls | length > 0
+      - squid_acls is iterable
+    quiet: yes
+  when:
+    - squid_acls is defined
+
+- name: test if item in squid_acls is set correctly
+  assert:
+    that:
+      - item.name is defined
+      - item.name | length > 0
+      - item.classifier is defined
+      - item.classifier | length > 0
+      - item.value is defined
+    quiet: yes
+  loop: "{{ squid_acls }}"
+  loop_control:
+    label: "{{ item.name }}"
+  when:
+    - squid_acls is defined
+
+- name: test if item in squid_http_access is set correctly
+  assert:
+    that:
+      - item.state is defined
+      - item.state | length > 0
+      - item.acls is defined
+      - item.acls | length > 0
+      - item.acls is iterable
+    quiet: yes
+  loop: "{{ squid_http_access }}"
+  loop_control:
+    label: "{{ item.state }}"
+  when:
+    - squid_http_access is defined
+
+- name: test if squid_cache_rules is set correctly
+  assert:
+    that:
+      - squid_cache_rules | length > 0
+      - squid_cache_rules is iterable
+    quiet: yes
+  when:
+    - squid_cache_rules is defined
+
+- name: test if item in squid_cache_rules is set correctly
+  assert:
+    that:
+      - item.acl is defined
+      - item.acl | length > 0
+      - item.decision is defined
+      - item.decision | length > 0
+      - item.decision in ["allow", "deny"]
+    quiet: yes
+  loop: "{{ squid_cache_rules }}"
+  loop_control:
+    label: "{{ item.acl }}"
+  when:
+    - squid_cache_rules is defined

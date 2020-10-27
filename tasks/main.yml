@@ -30,10 +30,9 @@
     src: "{{ squid_config_file }}.j2"
     dest: "{{ squid_config_directory }}/{{ squid_config_file }}"
     mode: "0644"
+    validate: squid -k parse -f %s
   notify:
-    - test squid configuration
     - restart squid
-
 
 - name: create cache directory
   file:
