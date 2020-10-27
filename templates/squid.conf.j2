@@ -5,6 +5,7 @@ http_port {{ squid_port }}
 cache_effective_user {{ squid_user }}
 cache_effective_group {{ squid_group }}
 
+<<<<<<< HEAD
 {% if squid_acls is defined %}
 {% for acl in squid_acls %}
 acl {{ acl.name }} {{ acl.classifier }} {{ acl.value }}
@@ -17,6 +18,8 @@ cache {{ rule.decision }} {{ rule.acl }}
 {% endfor %}
 {% endif %}
 
+=======
+>>>>>>> 5d16ff5471db81d4d478a416a0c02c2d68a827f2
 # Uncomment and adjust the following to add a disk cache directory.
 cache_dir {{ squid_cache_dir }}
 
@@ -34,3 +37,26 @@ cache_replacement_policy {{ squid_cache_replacement_policy }}
 {% if squid_maximum_object_size_mb is defined %}
 maximum_object_size {{ squid_maximum_object_size_mb }} MB
 {% endif %}
+<<<<<<< HEAD
+=======
+
+{% if squid_acls is defined %}
+{% for acl in squid_acls %}
+acl {{ acl.name }} {{ acl.classifier }} {{ acl.value }}
+{% endfor %}
+{% endif %}
+
+{% if squid_cache_rules is defined %}
+{% for rule in squid_cache_rules %}
+cache {{ rule.decision }} {{ rule.acl }}
+{% endfor %}
+{% endif %}
+
+{% if squid_http_access is defined %}
+{% for http_access in squid_http_access %}
+http_access {{ http_access.state }} {{ http_access.acls | join(' ') }}
+{% endfor %}
+{% endif %}
+
+http_access deny all
+>>>>>>> 5d16ff5471db81d4d478a416a0c02c2d68a827f2
