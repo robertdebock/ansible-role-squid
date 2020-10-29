@@ -6,71 +6,71 @@ squid_port: 3128
 squid_cache_dir: ufs /var/spool/squid 100 16 256
 
 # This is the default set of ACLS.
-squid_acls:
-  - name: localhost
-    classifier: src
-    value: 127.0.0.0/8
-  - name: localnet
-    classifier: src
-    value: 10.0.0.0/8
-  - name: localnet
-    classifier: src
-    value: 172.16.0.0/12
-  - name: localnet
-    classifier: src
-    value: 192.168.0.0/16
-  - name: localnet
-    classifier: src
-    value: "fc00::/7"
-  - name: localnet
-    classifier: src
-    value: "fe80::/10"
-  - name: SSL_ports
-    classifier: port
-    value: 443
-  - name: Safe_ports
-    classifier: port
-    value: 80
-  - name: Safe_ports
-    classifier: port
-    value: 21
-  - name: Safe_ports
-    classifier: port
-    value: 443
-  - name: Safe_ports
-    classifier: port
-    value: 70
-  - name: Safe_ports
-    classifier: port
-    value: 210
-  - name: Safe_ports
-    classifier: port
-    value: 1025-65535
-  - name: Safe_ports
-    classifier: port
-    value: 280
-  - name: Safe_ports
-    classifier: port
-    value: 488
-  - name: Safe_ports
-    classifier: port
-    value: 591
-  - name: Safe_ports
-    classifier: port
-    value: 777
-  - name: CONNECT
-    classifier: method
-    value: CONNECT
+# squid_acls:
+#   - name: localhost
+#     classifier: src
+#     value: 127.0.0.0/8
+#   - name: localnet
+#     classifier: src
+#     value: 10.0.0.0/8
+#   - name: localnet
+#     classifier: src
+#     value: 172.16.0.0/12
+#   - name: localnet
+#     classifier: src
+#     value: 192.168.0.0/16
+#   - name: localnet
+#     classifier: src
+#     value: "fc00::/7"
+#   - name: localnet
+#     classifier: src
+#     value: "fe80::/10"
+#   - name: SSL_ports
+#     classifier: port
+#     value: 443
+#   - name: Safe_ports
+#     classifier: port
+#     value: 80
+#   - name: Safe_ports
+#     classifier: port
+#     value: 21
+#   - name: Safe_ports
+#     classifier: port
+#     value: 443
+#   - name: Safe_ports
+#     classifier: port
+#     value: 70
+#   - name: Safe_ports
+#     classifier: port
+#     value: 210
+#   - name: Safe_ports
+#     classifier: port
+#     value: 1025-65535
+#   - name: Safe_ports
+#     classifier: port
+#     value: 280
+#   - name: Safe_ports
+#     classifier: port
+#     value: 488
+#   - name: Safe_ports
+#     classifier: port
+#     value: 591
+#   - name: Safe_ports
+#     classifier: port
+#     value: 777
+#   - name: CONNECT
+#     classifier: method
+#     value: CONNECT
 
 # This is how to allow (or deny) access to specified ACLs.
-squid_cache_rules:
-  - acl: "!Safe_ports"
-    decision: deny
-  - acl: "CONNECT !SSL_Ports"
-    decision: deny
-  - acl: localhost
-    decision: allow
-  - acl: localnet
-    decision: allow
-  - acl: all
-    decision: deny
+# squid_cache_rules:
+#   - acl: "!Safe_ports"
+#     decision: deny
+#   - acl: "CONNECT !SSL_Ports"
+#     decision: deny
+#   - acl: localhost
+#     decision: allow
+#   - acl: localnet
+#     decision: allow
+#   - acl: all
+#     decision: deny
