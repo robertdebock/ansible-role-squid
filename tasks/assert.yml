@@ -13,7 +13,7 @@
     that:
       - squid_cache_dir is defined
       - squid_cache_dir | length > 0
-      - squid_cache_dir.split(" ")[0] in ["ufs", "aufs", "diskd", "rock", "null"]
+      - squid_cache_dir.split(" ")[0] in [ "ufs", "aufs", "diskd", "rock", "null" ]
     quiet: yes
 
 - name: test if squid_cache_dir is set correctly when no null driver is used
@@ -85,7 +85,7 @@
       - item.acl | length > 0
       - item.decision is defined
       - item.decision | length > 0
-      - item.decision in ["allow", "deny"]
+      - item.decision in [ "allow", "deny" ]
     quiet: yes
   loop: "{{ squid_cache_rules }}"
   loop_control:
