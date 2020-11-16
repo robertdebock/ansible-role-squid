@@ -4,8 +4,8 @@
     that:
       - squid_port is defined
       - squid_port is number
-      - squid_port | int > 0
-      - squid_port | int < 65536
+      - squid_port > 0
+      - squid_port < 65536
     quiet: yes
 
 - name: test if squid_cache_dir is set correctly
@@ -18,12 +18,12 @@
 - name: test if squid_cache_dir is set correctly when no null driver is used
   assert:
     that:
-      - squid_cache_dir.split(" ")[2] | int
-      - squid_cache_dir.split(" ")[2] | int > 0
-      - squid_cache_dir.split(" ")[3] | int
-      - squid_cache_dir.split(" ")[3] | int > 0
-      - squid_cache_dir.split(" ")[4] | int
-      - squid_cache_dir.split(" ")[4] | int > 0
+      - squid_cache_dir.split(" ")[2]
+      - squid_cache_dir.split(" ")[2] > 0
+      - squid_cache_dir.split(" ")[3]
+      - squid_cache_dir.split(" ")[3] > 0
+      - squid_cache_dir.split(" ")[4]
+      - squid_cache_dir.split(" ")[4] > 0
     quiet: yes
     fail_msg: "The null storage driver does not allow arguments to be set."
   when:
