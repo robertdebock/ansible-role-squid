@@ -19,11 +19,11 @@
   assert:
     that:
       - squid_cache_dir.split(" ")[2]
-      - squid_cache_dir.split(" ")[2] > 0
+      - squid_cache_dir.split(" ")[2] |int > 0
       - squid_cache_dir.split(" ")[3]
-      - squid_cache_dir.split(" ")[3] > 0
+      - squid_cache_dir.split(" ")[3] |int > 0
       - squid_cache_dir.split(" ")[4]
-      - squid_cache_dir.split(" ")[4] > 0
+      - squid_cache_dir.split(" ")[4] |int > 0
     quiet: yes
     fail_msg: "The null storage driver does not allow arguments to be set."
   when:
@@ -63,23 +63,23 @@
   when:
     - squid_http_access is defined
 
-- name: test if squid_cache_rules is set correctly
+- name: test if squid_rules is set correctly
   assert:
     that:
-      - squid_cache_rules is iterable
+      - squid_rules is iterable
     quiet: yes
   when:
-    - squid_cache_rules is defined
+    - squid_rules is defined
 
-- name: test if item in squid_cache_rules is set correctly
+- name: test if item in squid_rules is set correctly
   assert:
     that:
       - item.acl is defined
       - item.decision is defined
       - item.decision in [ "allow", "deny" ]
     quiet: yes
-  loop: "{{ squid_cache_rules }}"
+  loop: "{{ squid_rules }}"
   loop_control:
     label: "{{ item.acl }}"
   when:
-    - squid_cache_rules is defined
+    - squid_rules is defined

@@ -11,9 +11,9 @@ acl {{ acl.name }} {{ acl.classifier }} {{ acl.value }}
 {% endfor %}
 {% endif %}
 
-{% if squid_cache_rules is defined %}
-{% for rule in squid_cache_rules %}
-cache {{ rule.decision }} {{ rule.acl }}
+{% if squid_rules is defined %}
+{% for rule in squid_rules %}
+http_access {{ rule.decision }} {{ rule.acl }}
 {% endfor %}
 {% endif %}
 
@@ -39,4 +39,3 @@ cache_replacement_policy {{ squid_cache_replacement_policy }}
 {% if squid_maximum_object_size_mb is defined %}
 maximum_object_size {{ squid_maximum_object_size_mb }} MB
 {% endif %}
-

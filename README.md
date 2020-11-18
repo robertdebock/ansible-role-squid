@@ -18,10 +18,88 @@ This example is taken from `molecule/resources/converge.yml` and is tested on ea
 
   roles:
     - role: robertdebock.squid
-      squid_port: 3128
       squid_cache_dir: aufs /var/spool/squid 16000 16 256 max-size=8589934592
       squid_cache_replacement_policy: heap LFUDA
       squid_maximum_object_size_mb: 256
+
+      squid_acls:
+        - name: localnet
+          classifier: src
+          value: 0.0.0.1-0.255.255.255
+        - name: localnet
+          classifier: src
+          value: 10.0.0.0/8
+        - name: localnet
+          classifier: src
+          value: 100.64.0.0/10
+        - name: localnet
+          classifier: src
+          value: 169.254.0.0/16
+        - name: localnet
+          classifier: src
+          value: 172.16.0.0/12
+        - name: localnet
+          classifier: src
+          value: 192.168.0.0/16
+        - name: localnet
+          classifier: src
+          value: "fc00::/7"
+        - name: localnet
+          classifier: src
+          value: "fe80::/10"
+        - name: SSL_ports
+          classifier: port
+          value: 443
+        - name: Safe_ports
+          classifier: port
+          value: 80
+        - name: Safe_ports
+          classifier: port
+          value: 21
+        - name: Safe_ports
+          classifier: port
+          value: 443
+        - name: Safe_ports
+          classifier: port
+          value: 70
+        - name: Safe_ports
+          classifier: port
+          value: 210
+        - name: Safe_ports
+          classifier: port
+          value: 1025-65535
+        - name: Safe_ports
+          classifier: port
+          value: 280
+        - name: Safe_ports
+          classifier: port
+          value: 488
+        - name: Safe_ports
+          classifier: port
+          value: 591
+        - name: Safe_ports
+          classifier: port
+          value: 777
+        - name: CONNECT
+          classifier: method
+          value: CONNECT
+      squid_rules:
+        - acl: "!Safe_ports"
+          decision: deny
+        - acl: "CONNECT !SSL_Ports"
+          decision: deny
+        - acl: localhost manager
+          decision: allow
+        - acl: manager
+          decision: deny
+        - acl: to_localhost
+          decision: deny
+        - acl: localnet
+          decision: allow
+        - acl: localhost
+          decision: allow
+        - acl: all
+          decision: deny
 ```
 
 The machine needs to be prepared in CI this is done using `molecule/resources/prepare.yml`:
@@ -108,7 +186,7 @@ squid_cache_dir: ufs /var/spool/squid 100 16 256
 #     value: CONNECT
 
 # This is how to allow (or deny) access to specified ACLs.
-# squid_cache_rules:
+# squid_rules:
 #   - acl: "!Safe_ports"
 #     decision: deny
 #   - acl: "CONNECT !SSL_Ports"

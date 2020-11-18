@@ -5,5 +5,9 @@
   gather_facts: no
 
   tasks:
-    - name: check if connection still works
-      ping:
+    - name: test the proxy
+      uri:
+        url: "http://www.google.com/"
+      environment:
+        http_proxy: http://localhost:3128
+        https_proxy: http://localhost:3128

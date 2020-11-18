@@ -63,7 +63,7 @@ squid_cache_dir: ufs /var/spool/squid 100 16 256
 #     value: CONNECT
 
 # This is how to allow (or deny) access to specified ACLs.
-# squid_cache_rules:
+# squid_rules:
 #   - acl: "!Safe_ports"
 #     decision: deny
 #   - acl: "CONNECT !SSL_Ports"
