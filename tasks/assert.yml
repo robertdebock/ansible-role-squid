@@ -13,6 +13,7 @@
   assert:
     that:
       - squid_cache_dir is defined
+      - squid_cache_dir is string
       - squid_cache_dir.split(" ")[0] in [ "ufs", "aufs", "diskd", "rock", "null" ]
     quiet: yes
 
@@ -42,8 +43,11 @@
   assert:
     that:
       - item.name is defined
+      - item.name is string
       - item.classifier is defined
+      - item.classifier is string
       - item.value is defined
+      - item.value is string
     quiet: yes
   loop: "{{ squid_acls }}"
   loop_control:
@@ -55,6 +59,7 @@
   assert:
     that:
       - item.state is defined
+      - item.state is string
       - item.acls is defined
       - item.acls is iterable
     quiet: yes
@@ -76,7 +81,9 @@
   assert:
     that:
       - item.acl is defined
+      - item.acl is string
       - item.decision is defined
+      - item.decision is string
       - item.decision in [ "allow", "deny" ]
     quiet: yes
   loop: "{{ squid_rules }}"
