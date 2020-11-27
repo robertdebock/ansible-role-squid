@@ -50,3 +50,5 @@
     name: "{{ squid_service }}"
     state: started
     enabled: yes
+  when:
+    - not ansible_check_mode | bool
