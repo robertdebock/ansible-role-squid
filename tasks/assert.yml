@@ -1,7 +1,7 @@
 ---
 
 - name: test if squid_port is set correctly
-  assert:
+  ansible.builtin.assert:
     that:
       - squid_port is defined
       - squid_port is number
@@ -10,7 +10,7 @@
     quiet: yes
 
 - name: test if squid_cache_dir is set correctly
-  assert:
+  ansible.builtin.assert:
     that:
       - squid_cache_dir is defined
       - squid_cache_dir is string
@@ -18,7 +18,7 @@
     quiet: yes
 
 - name: test if squid_cache_dir is set correctly when no null driver is used
-  assert:
+  ansible.builtin.assert:
     that:
       - squid_cache_dir.split(" ")[2]
       - squid_cache_dir.split(" ")[2] |int > 0
@@ -32,7 +32,7 @@
     - squid_cache_dir.split(" ")[0] != "null"
 
 - name: test if squid_acls is set correctly
-  assert:
+  ansible.builtin.assert:
     that:
       - squid_acls is iterable
     quiet: yes
@@ -40,7 +40,7 @@
     - squid_acls is defined
 
 - name: test if item in squid_acls is set correctly
-  assert:
+  ansible.builtin.assert:
     that:
       - item.name is defined
       - item.name is string
@@ -56,7 +56,7 @@
     - squid_acls is defined
 
 - name: test if item in squid_http_access is set correctly
-  assert:
+  ansible.builtin.assert:
     that:
       - item.state is defined
       - item.state is string
@@ -70,7 +70,7 @@
     - squid_http_access is defined
 
 - name: test if squid_rules is set correctly
-  assert:
+  ansible.builtin.assert:
     that:
       - squid_rules is iterable
     quiet: yes
@@ -78,7 +78,7 @@
     - squid_rules is defined
 
 - name: test if item in squid_rules is set correctly
-  assert:
+  ansible.builtin.assert:
     that:
       - item.acl is defined
       - item.acl is string

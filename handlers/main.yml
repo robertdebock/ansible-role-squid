@@ -2,7 +2,7 @@
 # handlers file for squid
 
 - name: restart squid
-  service:
+  ansible.builtin.service:
     name: "{{ squid_service }}"
     state: restarted
   when:
