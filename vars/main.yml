@@ -21,3 +21,5 @@ squid_config_directory: /etc/squid
 squid_config_file: squid.conf
 
 squid_service: squid
+
+squid_access_log: /var/log/squid
