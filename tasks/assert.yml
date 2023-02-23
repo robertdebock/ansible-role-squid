@@ -21,11 +21,14 @@
   ansible.builtin.assert:
     that:
       - squid_cache_dir.split(" ")[2]
-      - squid_cache_dir.split(" ")[2] |int > 0
+      - squic_cache_dir.split(" ")[2] is number
+      - squid_cache_dir.split(" ")[2] > 0
       - squid_cache_dir.split(" ")[3]
-      - squid_cache_dir.split(" ")[3] |int > 0
+      - squid_cache_dir.split(" ")[3] is number
+      - squid_cache_dir.split(" ")[3] > 0
       - squid_cache_dir.split(" ")[4]
-      - squid_cache_dir.split(" ")[4] |int > 0
+      - squid_cache_dir.split(" ")[4] is number
+      - squid_cache_dir.split(" ")[4] > 0
     quiet: yes
     fail_msg: "The null storage driver does not allow arguments to be set."
   when:
