@@ -1,43 +1,98 @@
 {{ ansible_managed | comment }}
 
-http_port {{ squid_port }}
-
+cache_dir {{ squid_cache_dir }}
 cache_effective_user {{ squid_user }}
 cache_effective_group {{ squid_group }}
+{% if squid_cache_mem_mb is defined %}
+cache_mem {{ squid_cache_mem_mb }} MB
+{% endif %}
+{% if squid_cache_replacement_policy is defined %}
+cache_replacement_policy {{ squid_cache_replacement_policy }}
+{% endif %}
+{% if squid_cache_swap_low_pct is defined %}
+cache_swap_low {{ squid_cache_swap_low_pct }}
+{% endif %}
+{% if squid_cache_swap_high_pct is defined %}
+cache_swap_high {{ squid_cache_swap_high_pct }}
+{% endif %}
+{% if squid_client_persistent_connections is defined %}
+client_persistent_connections {{ squid_client_persistent_connections }}
+{% endif %}
+{% if squid_cordeump_dir is defined %}
+coredump_dir {{ squid_cordeump_dir }}
+{% endif %}
+{% if squid_dns_nameservers is defined %}
+dns_nameservers {{ squid_dns_nameservers | join(' ') }}
+{% endif %}
+{% if squid_dns_v4_first is defined %}
+dns_v4_first {{ squid_dns_v4_first }}
+{% endif %}
+{% if squid_forwarded_for is defined %}
+forwarded_for {{ squid_forwarded_for }}
+{% endif %}
+{% if squid_half_closed_clients is defined %}
+half_closed_clients {{ squid_half_closed_clients }}
+{% endif %}
+http_port {{ squid_port }}
+{% if squid_maximum_object_size_mb is defined %}
+maximum_object_size {{ squid_maximum_object_size_mb }} MB
+{% endif %}
+{% if squid_maximum_object_size_in_memory_mb is defined %}
+maximum_object_size_in_memory {{ squid_maximum_object_size_in_memory_mb }} MB
+{% endif %}
+{% if squid_quick_abort_min_kb is defined %}
+quick_abort_min {{ squid_quick_abort_min_kb }} KB
+{% endif %}
+{% if squid_quick_abort_max_kb is defined %}
+quick_abort_max {{ squid_quick_abort_max_kb }} KB
+{% endif %}
+{% if squid_quick_abort_pct is defined %}
+quick_abort_pct {{ squid_quick_abort_pct }}
+{% endif %}
+{% if squid_server_persistent_connections is defined %}
+server_persistent_connections {{ squid_server_persistent_connections }}
+{% endif %}
+{% if squid_via is defined %}
+via {{ squid_via }}
+{% endif %}
+{% if squid_visible_hostname is defined %}
+visible_hostname {{ squid_visible_hostname }}
+{% endif %}
+
+{% if squid_request_header_access is defined %}
+{% for header in squid_request_header_access %}
+request_header_access {{ header.name }} {{ header.decision }} {{ header.aclname }}
+{% endfor %}
+{% endif %}
 
 {% if squid_acls is defined %}
 {% for acl in squid_acls %}
-acl {{ acl.name }} {{ acl.classifier }} {{ acl.value }}
+acl {{ acl.name }} {{ acl.classifier }} {{ acl.value }}{%+ if acl.comments is defined %} # {{ acl.comments }}{% endif +%}
 {% endfor %}
 {% endif %}
 
 {% if squid_rules is defined %}
 {% for rule in squid_rules %}
-http_access {{ rule.decision }} {{ rule.acl }}
+http_access {{ rule.decision }} {{ rule.acl }}{%+ if rule.comments is defined %} # {{ rule.comments }}{% endif +%}
 {% endfor %}
 {% endif %}
 
 {% if squid_http_access is defined %}
 {% for http_access in squid_http_access %}
-http_access {{ http_access.state }} {{ http_access.acls | join(' ') }}
+http_access {{ http_access.state }} {{ http_access.acls | join(' ') }}{%+ if http_access.comments is defined %} # {{ http_access.comments }}{% endif +%}
 {% endfor %}
 {% endif %}
-
-cache_dir {{ squid_cache_dir }}
-
-coredump_dir /var/spool/squid
 
 refresh_pattern ^ftp:		1440	20%	10080
 refresh_pattern ^gopher:	1440	0%	1440
 refresh_pattern -i (/cgi-bin/|\?) 0	0%	0
 refresh_pattern .		0	20%	4320
 
-{% if squid_cache_replacement_policy is defined %}
-cache_replacement_policy {{ squid_cache_replacement_policy }}
-{% endif %}
-
-{% if squid_maximum_object_size_mb is defined %}
-maximum_object_size {{ squid_maximum_object_size_mb }} MB
+{% if squid_refresh_patterns is defined %}
+# Custom refresh patterns
+{% for refresh_pattern in squid_refresh_patterns %}
+refresh_pattern {{ refresh_pattern.regex }} {{ refresh_pattern.min }} {{ refresh_pattern.percent }}% {{ refresh_pattern.max }}{% if refresh_pattern.options is defined %} {{ refresh_pattern.options }}{% endif +%}
+{% endfor %}
 {% endif %}
 
 {% if squid_logformat is defined %}
