@@ -1,4 +1,12 @@
 ---
+- name: Test if squid_handler_action is set correctly
+  ansible.builtin.assert:
+    that:
+      - squid_handler_action is defined
+      - squid_handler_action is string
+      - squid_handler_action in [ "restart", "reload" ]
+    quiet: yes
+
 - name: Test if squid_cache_dir is set correctly
   ansible.builtin.assert:
     that:
@@ -81,6 +89,15 @@
   when:
     - squid_dns_nameservers is defined
 
+- name: Test if squid_dns_timeout is set correctly
+  ansible.builtin.assert:
+    that:
+      - squid_dns_timeout is defined
+      - squid_dns_timeout is number
+    quiet: yes
+  when:
+    - squid_dns_timeout is defined
+
 - name: Test if squid_dns_v4_first is set correctly
   ansible.builtin.assert:
     that:
@@ -119,6 +136,16 @@
       - squid_port > 0
       - squid_port < 65536
     quiet: yes
+
+- name: Test if squid_httpd_suppress_version_string is set correctly
+  ansible.builtin.assert:
+    that:
+      - squid_httpd_suppress_version_string is defined
+      - squid_httpd_suppress_version_string is string
+      - squid_httpd_suppress_version_string in [ "off", "on" ]
+    quiet: yes
+  when:
+    - squid_httpd_suppress_version_string is defined
 
 - name: Test if squid_maximum_object_size_mb is set correctly
   ansible.builtin.assert:
@@ -167,6 +194,24 @@
   when:
     - squid_quick_abort_pct is defined
 
+- name: Test if squid_range_offset_limit is set correctly
+  ansible.builtin.assert:
+    that:
+      - squid_range_offset_limit is defined
+      - squid_range_offset_limit is number
+    quiet: yes
+  when:
+    - squid_range_offset_limit is defined
+
+- name: Test if squid_read_ahead_gap_kb is set correctly
+  ansible.builtin.assert:
+    that:
+      - squid_read_ahead_gap_kb is defined
+      - squid_read_ahead_gap_kb is number
+    quiet: yes
+  when:
+    - squid_read_ahead_gap_kb is defined
+
 - name: Test if squid_server_persistent_connections is set correctly
   ansible.builtin.assert:
     that:
@@ -176,6 +221,15 @@
     quiet: yes
   when:
     - squid_server_persistent_connections is defined
+
+- name: Test if squid_shutdown_lifetime_sec is set correctly
+  ansible.builtin.assert:
+    that:
+      - squid_shutdown_lifetime_sec is defined
+      - squid_shutdown_lifetime_sec is number
+    quiet: yes
+  when:
+    - squid_shutdown_lifetime_sec is defined
 
 - name: Test if squid_via is set correctly
   ansible.builtin.assert:
@@ -243,6 +297,79 @@
     label: "{{ item.name }}"
   when:
     - squid_acls is defined
+
+- name: Test if squid_never_directs is set correctly
+  ansible.builtin.assert:
+    that:
+      - squid_never_directs is iterable
+    quiet: yes
+  when:
+    - squid_never_directs is defined
+
+- name: Test if item in squid_never_directs is set correctly
+  ansible.builtin.assert:
+    that:
+      - item.decision is defined
+      - item.decision is string
+      - item.aclname is defined
+      - item.aclname is string
+    quiet: yes
+  loop: "{{ squid_never_directs }}"
+  loop_control:
+    label: "{{ item.aclname }}"
+  when:
+    - squid_never_directs is defined
+
+- name: Test if squid_cache_peers is set correctly
+  ansible.builtin.assert:
+    that:
+      - squid_cache_peers is iterable
+    quiet: yes
+  when:
+    - squid_cache_peers is defined
+
+- name: Test if item in squid_cache_peers is set correctly
+  ansible.builtin.assert:
+    that:
+      - item.hostname is defined
+      - item.hostname is string
+      - item.type is defined
+      - item.type is string
+      - item.type is in [ "parent", "sibling", "multicast" ]
+      - item.proxyport is defined
+      - item.proxyport is number
+      - item.icpport is defined
+      - item.icpport is number
+    quiet: yes
+  loop: "{{ squid_cache_peers }}"
+  loop_control:
+    label: "{{ item.hostname }}"
+  when:
+    - squid_cache_peers is defined
+
+- name: Test if squid_cache_peer_access is set correctly
+  ansible.builtin.assert:
+    that:
+      - squid_cache_peer_access is iterable
+    quiet: yes
+  when:
+    - squid_cache_peer_access is defined
+
+- name: Test if item in squid_cache_peer_access is set correctly
+  ansible.builtin.assert:
+    that:
+      - item.peername is defined
+      - item.peername is string
+      - item.decision is defined
+      - item.decision is string
+      - item.aclname is defined
+      - item.aclname is string
+    quiet: yes
+  loop: "{{ squid_cache_peer_access }}"
+  loop_control:
+    label: "{{ item.peername }}"
+  when:
+    - squid_cache_peer_access is defined
 
 - name: Test if squid_rules is set correctly
   ansible.builtin.assert:
