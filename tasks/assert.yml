@@ -62,12 +62,23 @@
   when:
     - client_persistent_connections is defined
 
-- name: Test if squid_cordeump_dir is set correctly
+- name: Test if squid_coredump_dir is set correctly
   ansible.builtin.assert:
     that:
-      - squid_cordeump_dir is defined
-      - squid_cordeump_dir is string
+      - squid_coredump_dir is defined
+      - squid_coredump_dir is string
     quiet: yes
+  when:
+    - squid_coredump_dir is defined
+
+- name: Test if squid_debug_options is set correctly
+  ansible.builtin.assert:
+    that:
+      - squid_debug_options is defined
+      - squid_debug_options is string
+    quiet: yes
+  when:
+    - squid_debug_options is defined
 
 - name: Test if squid_dns_nameservers is set correctly
   ansible.builtin.assert:

@@ -18,8 +18,11 @@ cache_swap_high {{ squid_cache_swap_high_pct }}
 {% if squid_client_persistent_connections is defined %}
 client_persistent_connections {{ squid_client_persistent_connections }}
 {% endif %}
-{% if squid_cordeump_dir is defined %}
-coredump_dir {{ squid_cordeump_dir }}
+{% if squid_coredump_dir is defined %}
+coredump_dir {{ squid_coredump_dir }}
+{% endif %}
+{% if squid_debug_options is defined %}
+debug_options {{ squid_debug_options }}
 {% endif %}
 {% if squid_dns_nameservers is defined %}
 dns_nameservers {{ squid_dns_nameservers | join(' ') }}
