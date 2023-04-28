@@ -100,29 +100,29 @@ acl {{ '%-*s' | format(nl, acl.name) }} {{ '%-*s' | format(cl, acl.classifier) }
 {% endfor %}
 {% endif %}
 
-{%- if squid_always_directs is defined %}
+{% if squid_always_directs is defined %}
 {% for always_direct in squid_always_directs %}
 always_direct {{ always_direct.decision }} {{ always_direct.aclname }}
 {% endfor %}
-{% endif -%}
+{% endif %}
 
-{%- if squid_never_directs is defined %}
+{% if squid_never_directs is defined %}
 {% for never_direct in squid_never_directs %}
 never_direct {{ never_direct.decision }} {{ never_direct.aclname }}
 {% endfor %}
-{% endif -%}
+{% endif %}
 
-{%- if squid_cache_peers is defined %}
+{% if squid_cache_peers is defined %}
 {% for cache_peer in squid_cache_peers %}
 cache_peer {{ cache_peer.hostname }} {{ cache_peer.type }} {{ cache_peer.proxyport}} {{ cache_peer.icpport}} {{ cache_peer.options }}
 {% endfor %}
-{% endif -%}
+{% endif %}
 
-{%- if squid_cache_peer_access is defined %}
+{% if squid_cache_peer_access is defined %}
 {% for cache_peer in squid_cache_peer_access %}
 cache_peer_access {{ cache_peer.peername }} {{ cache_peer.decision }} {{ cache_peer.aclname}}
 {% endfor %}
-{% endif -%}
+{% endif %}
 
 {% if squid_rules is defined %}
 {% for rule in squid_rules %}
