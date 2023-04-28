@@ -309,6 +309,28 @@
   when:
     - squid_acls is defined
 
+- name: Test if squid_always_directs is set correctly
+  ansible.builtin.assert:
+    that:
+      - squid_always_directs is iterable
+    quiet: yes
+  when:
+    - squid_always_directs is defined
+
+- name: Test if item in squid_always_directs is set correctly
+  ansible.builtin.assert:
+    that:
+      - item.decision is defined
+      - item.decision is string
+      - item.aclname is defined
+      - item.aclname is string
+    quiet: yes
+  loop: "{{ squid_always_directs }}"
+  loop_control:
+    label: "{{ item.aclname }}"
+  when:
+    - squid_always_directs is defined
+
 - name: Test if squid_never_directs is set correctly
   ansible.builtin.assert:
     that:

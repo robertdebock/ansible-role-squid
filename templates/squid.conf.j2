@@ -89,6 +89,12 @@ acl {{ '%-50s' | format(acl.name) }} {{ '%-15s' | format(acl.classifier) }} {{ '
 {% endfor %}
 {% endif %}
 
+{% if squid_always_directs is defined %}
+{% for always_direct in squid_always_directs %}
+always_direct {{ always_direct.decision }} {{ always_direct.aclname }}
+{% endfor %}
+{% endif %}
+
 {% if squid_never_directs is defined %}
 {% for never_direct in squid_never_directs %}
 never_direct {{ never_direct.decision }} {{ never_direct.aclname }}
