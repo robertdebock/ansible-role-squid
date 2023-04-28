@@ -137,7 +137,7 @@ http_access {{ rule.decision }} {{ rule.acl }}{%+ if rule.comment is defined %} 
 {% endfor %}
 {%- set al = cl | max + 2 -%}
 {% for http_access in squid_http_access %}
-http_access {{ '%-5s' | format(http_access.state) }} {{ '%-*s' | format(al, http_access.acls | join(' ')) }}{%+ if http_access.comment is defined %} # {{ http_access.comment }}{% endif +%}
+http_access {{ '%-5s' | format(http_access.state) }} {{ '%-*s' | format(al, http_access.acls | join(' ')) }}{%+ if http_access.comment is defined %}# {{ http_access.comment }}{% endif +%}
 {% endfor %}
 {% endif %}
 
@@ -159,12 +159,12 @@ refresh_pattern .                  0        20%      4320
 {{- rfp_max.append(r.max | string | length) -}}
 {% endfor %}
 {%- set regl = rfp_reg | max + 2 -%}
-{%- set minl = rfp_min | max + 2 -%}
-{%- set pctl = rfp_pct | max + 2 -%}
-{%- set maxl = rfp_max | max + 2 -%}
+{%- set minl = rfp_min | max + 4 -%}
+{%- set pctl = rfp_pct | max + 4 -%}
+{%- set maxl = rfp_max | max + 4 -%}
 {% for refresh_pattern in squid_refresh_patterns %}
 {% set refresh_pattern_percent = refresh_pattern.percent ~ '%' %}
-refresh_pattern {{ '%-*s' | format(regl, refresh_pattern.regex) }}{{ '%-*s' | format(minl, refresh_pattern.min) }}{{ '%-*s' | format(pctl, refresh_pattern_percent) }}{{ '%-*s' | format(maxl, refresh_pattern.max) }}{% if refresh_pattern.options is defined %} {{ refresh_pattern.options }}{% endif +%}
+refresh_pattern {{ '%-*s' | format(regl, refresh_pattern.regex) }}{{ '%-*s' | format(minl, refresh_pattern.min) }}{{ '%-*s' | format(pctl, refresh_pattern_percent) }}{{ '%-*s' | format(maxl, refresh_pattern.max) }}{% if refresh_pattern.options is defined %}{{ refresh_pattern.options }}{% endif +%}
 {% endfor %}
 {% endif %}
 
