@@ -84,34 +84,45 @@ request_header_access {{ header.name }} {{ header.decision }} {{ header.aclname 
 {% endif %}
 
 {% if squid_acls is defined %}
+{%- set acl_n = [] -%}
+{%- set acl_c = [] -%}
+{%- set acl_v = [] -%}
+{% for a in squid_acls %}
+{{- acl_n.append(a.name | length) -}}
+{{- acl_c.append(a.classifier | length) -}}
+{{- acl_v.append(a.value | length) -}}
+{% endfor %}
+{%- set nl = acl_n | max + 2 -%}
+{%- set cl = acl_c | max + 2 -%}
+{%- set vl = acl_v | max + 2 -%}
 {% for acl in squid_acls %}
-acl {{ '%-50s' | format(acl.name) }} {{ '%-15s' | format(acl.classifier) }} {{ '%-50s' | format(acl.value) }}{%+ if acl.comment is defined %}# {{ acl.comment }}{% endif +%}
+acl {{ '%-*s' | format(nl, acl.name) }} {{ '%-*s' | format(cl, acl.classifier) }} {{ '%-*s' | format(vl, acl.value) }}{%+ if acl.comment is defined %}# {{ acl.comment }}{% endif +%}
 {% endfor %}
 {% endif %}
 
-{% if squid_always_directs is defined %}
+{%- if squid_always_directs is defined %}
 {% for always_direct in squid_always_directs %}
 always_direct {{ always_direct.decision }} {{ always_direct.aclname }}
 {% endfor %}
-{% endif %}
+{% endif -%}
 
-{% if squid_never_directs is defined %}
+{%- if squid_never_directs is defined %}
 {% for never_direct in squid_never_directs %}
 never_direct {{ never_direct.decision }} {{ never_direct.aclname }}
 {% endfor %}
-{% endif %}
+{% endif -%}
 
-{% if squid_cache_peers is defined %}
+{%- if squid_cache_peers is defined %}
 {% for cache_peer in squid_cache_peers %}
 cache_peer {{ cache_peer.hostname }} {{ cache_peer.type }} {{ cache_peer.proxyport}} {{ cache_peer.icpport}} {{ cache_peer.options }}
 {% endfor %}
-{% endif %}
+{% endif -%}
 
-{% if squid_cache_peer_access is defined %}
+{%- if squid_cache_peer_access is defined %}
 {% for cache_peer in squid_cache_peer_access %}
 cache_peer_access {{ cache_peer.peername }} {{ cache_peer.decision }} {{ cache_peer.aclname}}
 {% endfor %}
-{% endif %}
+{% endif -%}
 
 {% if squid_rules is defined %}
 {% for rule in squid_rules %}
@@ -120,28 +131,40 @@ http_access {{ rule.decision }} {{ rule.acl }}{%+ if rule.comment is defined %} 
 {% endif %}
 
 {% if squid_http_access is defined %}
+{%- set cl = [] -%}
+{% for h in squid_http_access %}
+{{- cl.append(h.acls | join(' ') | length) -}}
+{% endfor %}
+{%- set al = cl | max + 2 -%}
 {% for http_access in squid_http_access %}
-{% if http_access.comment is defined %}
-
-{{ http_access.comment | comment }}
-{% endif%}
-http_access {{ http_access.state }} {{ http_access.acls | join(' ') }}
-{% if http_access.comment is defined %}
-
-{% endif %}
+http_access {{ '%-5s' | format(http_access.state) }} {{ '%-*s' | format(al, http_access.acls | join(' ')) }}{%+ if http_access.comment is defined %} # {{ http_access.comment }}{% endif +%}
 {% endfor %}
 {% endif %}
 
-refresh_pattern ^ftp:                     1440     20%      10080
-refresh_pattern ^gopher:                  1440     0%       1440
-refresh_pattern -i (/cgi-bin/|\?)         0        0%       0
-refresh_pattern .                         0        20%      4320
+refresh_pattern ^ftp:              1440     20%      10080
+refresh_pattern ^gopher:           1440     0%       1440
+refresh_pattern -i (/cgi-bin/|\?)  0        0%       0
+refresh_pattern .                  0        20%      4320
 
 {% if squid_refresh_patterns is defined %}
 {{ 'Custom refresh patterns' | comment }}
+{% set rfp_reg = [] -%}
+{%- set rfp_min = [] -%}
+{%- set rfp_pct = [] -%}
+{%- set rfp_max = [] -%}
+{% for r in squid_refresh_patterns %}
+{{- rfp_reg.append(r.regex | length) -}}
+{{- rfp_min.append(r.min | string | length) -}}
+{{- rfp_pct.append(r.percent | string | length) -}}
+{{- rfp_max.append(r.max | string | length) -}}
+{% endfor %}
+{%- set regl = rfp_reg | max + 2 -%}
+{%- set minl = rfp_min | max + 2 -%}
+{%- set pctl = rfp_pct | max + 2 -%}
+{%- set maxl = rfp_max | max + 2 -%}
 {% for refresh_pattern in squid_refresh_patterns %}
 {% set refresh_pattern_percent = refresh_pattern.percent ~ '%' %}
-refresh_pattern {{ '%-25s' | format(refresh_pattern.regex) }} {{ '%-8s' | format(refresh_pattern.min) }} {{ '%-8s' | format(refresh_pattern_percent) }} {{ '%-8s' | format(refresh_pattern.max) }}{% if refresh_pattern.options is defined %} {{ refresh_pattern.options }}{% endif +%}
+refresh_pattern {{ '%-*s' | format(regl, refresh_pattern.regex) }} {{ '%-*s' | format(minl, refresh_pattern.min) }} {{ '%-*s' | format(pctl, refresh_pattern_percent) }} {{ '%-*s' | format(maxl, refresh_pattern.max) }}{% if refresh_pattern.options is defined %} {{ refresh_pattern.options }}{% endif +%}
 {% endfor %}
 {% endif %}
 
