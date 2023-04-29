@@ -1,4 +1,5 @@
 {{ ansible_managed | ansible.builtin.comment }}
+{% set ns = namespace() %}
 
 cache_dir {{ squid_cache_dir }}
 cache_effective_user {{ squid_user }}
@@ -84,7 +85,7 @@ request_header_access {{ header.name }} {{ header.decision }} {{ header.aclname 
 {% endif %}
 
 {% if squid_acls is defined %}
-{% set ns = namespace(nl=0) %}
+{% set ns.nl=0 %}
 {% set ns.cl=0 %}
 {% set ns.vl=0 %}
 {% for a in squid_acls %}
