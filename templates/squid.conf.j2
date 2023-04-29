@@ -1,4 +1,4 @@
-{{ ansible_managed | comment }}
+{{ ansible_managed | ansible.builtin.comment }}
 
 cache_dir {{ squid_cache_dir }}
 cache_effective_user {{ squid_user }}
@@ -84,19 +84,16 @@ request_header_access {{ header.name }} {{ header.decision }} {{ header.aclname 
 {% endif %}
 
 {% if squid_acls is defined %}
-{%- set acl_n = [] -%}
-{%- set acl_c = [] -%}
-{%- set acl_v = [] -%}
+{% set ns = namespace(nl=0) %}
+{% set ns.cl=0 %}
+{% set ns.vl=0 %}
 {% for a in squid_acls %}
-{{- acl_n.append(a.name | length) -}}
-{{- acl_c.append(a.classifier | length) -}}
-{{- acl_v.append(a.value | length) -}}
+{% set ns.nl = [ a.name       | length, ns.nl ] | max %}
+{% set ns.cl = [ a.classifier | length, ns.cl ] | max %}
+{% set ns.vl = [ a.value      | length, ns.vl ] | max %}
 {% endfor %}
-{%- set nl = acl_n | max + 2 -%}
-{%- set cl = acl_c | max + 2 -%}
-{%- set vl = acl_v | max + 2 -%}
-{% for acl in squid_acls %}
-acl {{ '%-*s' | format(nl, acl.name) }}{{ '%-*s' | format(cl, acl.classifier) }}{{ '%-*s' | format(vl, acl.value) }}{%+ if acl.comment is defined %}# {{ acl.comment }}{% endif +%}
+{% for a in squid_acls %}
+acl {{ "{1:<{0}}".format(ns.nl+4, a.name) }}{{ "{1:<{0}}".format(ns.cl+4, a.classifier) }}{{ "{1:<{0}}".format(ns.vl+4, a.value) }}{% if a.comment is defined %}# {{ a.comment }}{% endif +%}
 {% endfor %}
 {% endif %}
 
@@ -131,13 +128,12 @@ http_access {{ rule.decision }} {{ rule.acl }}{%+ if rule.comment is defined %} 
 {% endif %}
 
 {% if squid_http_access is defined %}
-{%- set cl = [] -%}
+{% set ns.al=0 %}
 {% for h in squid_http_access %}
-{{- cl.append(h.acls | join(' ') | length) -}}
+{% set ns.al = [ h.acls | join(' ') | length, ns.al ] | max %}
 {% endfor %}
-{%- set al = cl | max + 2 -%}
-{% for http_access in squid_http_access %}
-http_access {{ '%-5s' | format(http_access.state) }} {{ '%-*s' | format(al, http_access.acls | join(' ')) }}{%+ if http_access.comment is defined %}# {{ http_access.comment }}{% endif +%}
+{% for h in squid_http_access %}
+http_access {{ h.state }} {{ "{1:<{0}}".format(ns.al+4, h.acls | join(' ')) }}{% if h.comment is defined %}# {{ h.comment }}{% endif +%}
 {% endfor %}
 {% endif %}
 
@@ -147,24 +143,20 @@ refresh_pattern -i (/cgi-bin/|\?)  0        0%       0
 refresh_pattern .                  0        20%      4320
 
 {% if squid_refresh_patterns is defined %}
-{{ 'Custom refresh patterns' | comment }}
-{% set rfp_reg = [] -%}
-{%- set rfp_min = [] -%}
-{%- set rfp_pct = [] -%}
-{%- set rfp_max = [] -%}
+{{ 'Custom refresh patterns' | ansible.builtin.comment }}
+{% set ns.reg=0 %}
+{% set ns.min=0 %}
+{% set ns.pct=0 %}
+{% set ns.max=0 %}
 {% for r in squid_refresh_patterns %}
-{{- rfp_reg.append(r.regex | length) -}}
-{{- rfp_min.append(r.min | string | length) -}}
-{{- rfp_pct.append(r.percent | string | length) -}}
-{{- rfp_max.append(r.max | string | length) -}}
+{% set ns.reg = [ r.regex   |          length, ns.reg ] | max %}
+{% set ns.min = [ r.min     | string | length, ns.min ] | max %}
+{% set ns.pct = [ r.percent | string | length, ns.pct ] | max %}
+{% set ns.max = [ r.max     | string | length, ns.max ] | max %}
 {% endfor %}
-{%- set regl = rfp_reg | max + 2 -%}
-{%- set minl = rfp_min | max + 4 -%}
-{%- set pctl = rfp_pct | max + 4 -%}
-{%- set maxl = rfp_max | max + 4 -%}
-{% for refresh_pattern in squid_refresh_patterns %}
-{% set refresh_pattern_percent = refresh_pattern.percent ~ '%' %}
-refresh_pattern {{ '%-*s' | format(regl, refresh_pattern.regex) }}{{ '%-*s' | format(minl, refresh_pattern.min) }}{{ '%-*s' | format(pctl, refresh_pattern_percent) }}{{ '%-*s' | format(maxl, refresh_pattern.max) }}{% if refresh_pattern.options is defined %}{{ refresh_pattern.options }}{% endif +%}
+{% for r in squid_refresh_patterns %}
+{% set r_percent = r.percent ~ '%' %}
+refresh_pattern {{ "{1:<{0}}".format(ns.reg+4, r.regex) }}{{ "{1:<{0}}".format(ns.min+4, r.min) }}{{ "{1:<{0}}".format(ns.pct+4, r_percent) }}{{ "{1:<{0}}".format(ns.max+4, r.max) }}{% if r.options is defined %}{{ r.options }}{% endif +%}
 {% endfor %}
 {% endif %}
 
