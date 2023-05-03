@@ -112,13 +112,13 @@ never_direct {{ never_direct.decision }} {{ never_direct.aclname }}
 
 {% if squid_cache_peers is defined %}
 {% for cache_peer in squid_cache_peers %}
-cache_peer {{ cache_peer.hostname }} {{ cache_peer.type }} {{ cache_peer.proxyport}} {{ cache_peer.icpport}} {{ cache_peer.options }}
+cache_peer {{ cache_peer.hostname }} {{ cache_peer.type }} {{ cache_peer.proxyport }} {{ cache_peer.icpport }} {{ cache_peer.options }}
 {% endfor %}
 {% endif %}
 
 {% if squid_cache_peer_access is defined %}
 {% for cache_peer in squid_cache_peer_access %}
-cache_peer_access {{ cache_peer.peername }} {{ cache_peer.decision }} {{ cache_peer.aclname}}
+cache_peer_access {{ cache_peer.peername }} {{ cache_peer.decision }} {{ cache_peer.aclname }}
 {% endfor %}
 {% endif %}
 
