@@ -34,7 +34,7 @@
     mode: "0644"
     validate: squid -k parse -f %s
   notify:
-    - Restart squid
+    - "{{ squid_handler_action | capitalize }} squid"
 
 - name: Create cache directory
   ansible.builtin.file:

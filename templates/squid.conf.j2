@@ -1,43 +1,164 @@
-{{ ansible_managed | comment }}
+{{ ansible_managed | ansible.builtin.comment }}
+{% set ns = namespace() %}
 
-http_port {{ squid_port }}
-
+cache_dir {{ squid_cache_dir }}
 cache_effective_user {{ squid_user }}
 cache_effective_group {{ squid_group }}
+{% if squid_cache_mem_mb is defined %}
+cache_mem {{ squid_cache_mem_mb }} MB
+{% endif %}
+{% if squid_cache_replacement_policy is defined %}
+cache_replacement_policy {{ squid_cache_replacement_policy }}
+{% endif %}
+{% if squid_cache_swap_low_pct is defined %}
+cache_swap_low {{ squid_cache_swap_low_pct }}
+{% endif %}
+{% if squid_cache_swap_high_pct is defined %}
+cache_swap_high {{ squid_cache_swap_high_pct }}
+{% endif %}
+{% if squid_client_persistent_connections is defined %}
+client_persistent_connections {{ squid_client_persistent_connections }}
+{% endif %}
+{% if squid_coredump_dir is defined %}
+coredump_dir {{ squid_coredump_dir }}
+{% endif %}
+{% if squid_debug_options is defined %}
+debug_options {{ squid_debug_options }}
+{% endif %}
+{% if squid_dns_nameservers is defined %}
+dns_nameservers {{ squid_dns_nameservers | join(' ') }}
+{% endif %}
+{% if squid_dns_timeout_sec is defined %}
+dns_timeout {{ squid_dns_timeout_sec }} seconds
+{% endif %}
+{% if squid_dns_v4_first is defined %}
+dns_v4_first {{ squid_dns_v4_first }}
+{% endif %}
+{% if squid_forwarded_for is defined %}
+forwarded_for {{ squid_forwarded_for }}
+{% endif %}
+{% if squid_half_closed_clients is defined %}
+half_closed_clients {{ squid_half_closed_clients }}
+{% endif %}
+http_port {{ squid_port }}
+{% if squid_httpd_suppress_version_string is defined %}
+httpd_suppress_version_string {{ squid_httpd_suppress_version_string }}
+{% endif %}
+{% if squid_maximum_object_size_mb is defined %}
+maximum_object_size {{ squid_maximum_object_size_mb }} MB
+{% endif %}
+{% if squid_maximum_object_size_in_memory_mb is defined %}
+maximum_object_size_in_memory {{ squid_maximum_object_size_in_memory_mb }} MB
+{% endif %}
+{% if squid_quick_abort_min_kb is defined %}
+quick_abort_min {{ squid_quick_abort_min_kb }} KB
+{% endif %}
+{% if squid_quick_abort_max_kb is defined %}
+quick_abort_max {{ squid_quick_abort_max_kb }} KB
+{% endif %}
+{% if squid_quick_abort_pct is defined %}
+quick_abort_pct {{ squid_quick_abort_pct }}
+{% endif %}
+{% if squid_range_offset_limit is defined %}
+range_offset_limit {{ squid_range_offset_limit }}
+{% endif %}
+{% if squid_read_ahead_gap_kb is defined %}
+read_ahead_gap {{ squid_read_ahead_gap_kb }} KB
+{% endif %}
+{% if squid_server_persistent_connections is defined %}
+server_persistent_connections {{ squid_server_persistent_connections }}
+{% endif %}
+{% if squid_shutdown_lifetime_sec is defined %}
+shutdown_lifetime {{ squid_shutdown_lifetime_sec }} seconds
+{% endif %}
+{% if squid_via is defined %}
+via {{ squid_via }}
+{% endif %}
+{% if squid_visible_hostname is defined %}
+visible_hostname {{ squid_visible_hostname }}
+{% endif %}
+
+{% if squid_request_header_access is defined %}
+{% for header in squid_request_header_access %}
+request_header_access {{ header.name }} {{ header.decision }} {{ header.aclname }}
+{% endfor %}
+{% endif %}
 
 {% if squid_acls is defined %}
-{% for acl in squid_acls %}
-acl {{ acl.name }} {{ acl.classifier }} {{ acl.value }}
+{% set ns.nl=0 %}
+{% set ns.cl=0 %}
+{% set ns.vl=0 %}
+{% for a in squid_acls %}
+{% set ns.nl = [ a.name       | length, ns.nl ] | max %}
+{% set ns.cl = [ a.classifier | length, ns.cl ] | max %}
+{% set ns.vl = [ a.value      | length, ns.vl ] | max %}
+{% endfor %}
+{% for a in squid_acls %}
+acl {{ "{1:<{0}}".format(ns.nl+4, a.name) }}{{ "{1:<{0}}".format(ns.cl+4, a.classifier) }}{{ "{1:<{0}}".format(ns.vl+4, a.value) }}{% if a.comment is defined %}# {{ a.comment }}{% endif +%}
+{% endfor %}
+{% endif %}
+
+{% if squid_always_directs is defined %}
+{% for always_direct in squid_always_directs %}
+always_direct {{ always_direct.decision }} {{ always_direct.aclname }}
+{% endfor %}
+{% endif %}
+
+{% if squid_never_directs is defined %}
+{% for never_direct in squid_never_directs %}
+never_direct {{ never_direct.decision }} {{ never_direct.aclname }}
+{% endfor %}
+{% endif %}
+
+{% if squid_cache_peers is defined %}
+{% for cache_peer in squid_cache_peers %}
+cache_peer {{ cache_peer.hostname }} {{ cache_peer.type }} {{ cache_peer.proxyport }} {{ cache_peer.icpport }} {{ cache_peer.options }}
+{% endfor %}
+{% endif %}
+
+{% if squid_cache_peer_access is defined %}
+{% for cache_peer in squid_cache_peer_access %}
+cache_peer_access {{ cache_peer.peername }} {{ cache_peer.decision }} {{ cache_peer.aclname }}
 {% endfor %}
 {% endif %}
 
 {% if squid_rules is defined %}
 {% for rule in squid_rules %}
-http_access {{ rule.decision }} {{ rule.acl }}
+http_access {{ rule.decision }} {{ rule.acl }}{%+ if rule.comment is defined %} # {{ rule.comment }}{% endif +%}
 {% endfor %}
 {% endif %}
 
 {% if squid_http_access is defined %}
-{% for http_access in squid_http_access %}
-http_access {{ http_access.state }} {{ http_access.acls | join(' ') }}
+{% set ns.al=0 %}
+{% for h in squid_http_access %}
+{% set ns.al = [ h.acls | join(' ') | length, ns.al ] | max %}
+{% endfor %}
+{% for h in squid_http_access %}
+http_access {{ h.state }} {{ "{1:<{0}}".format(ns.al+4, h.acls | join(' ')) }}{% if h.comment is defined %}# {{ h.comment }}{% endif +%}
 {% endfor %}
 {% endif %}
 
-cache_dir {{ squid_cache_dir }}
+refresh_pattern ^ftp:              1440     20%      10080
+refresh_pattern ^gopher:           1440     0%       1440
+refresh_pattern -i (/cgi-bin/|\?)  0        0%       0
+refresh_pattern .                  0        20%      4320
 
-coredump_dir /var/spool/squid
-
-refresh_pattern ^ftp:		1440	20%	10080
-refresh_pattern ^gopher:	1440	0%	1440
-refresh_pattern -i (/cgi-bin/|\?) 0	0%	0
-refresh_pattern .		0	20%	4320
-
-{% if squid_cache_replacement_policy is defined %}
-cache_replacement_policy {{ squid_cache_replacement_policy }}
-{% endif %}
-
-{% if squid_maximum_object_size_mb is defined %}
-maximum_object_size {{ squid_maximum_object_size_mb }} MB
+{% if squid_refresh_patterns is defined %}
+{{ 'Custom refresh patterns' | ansible.builtin.comment }}
+{% set ns.reg=0 %}
+{% set ns.min=0 %}
+{% set ns.pct=0 %}
+{% set ns.max=0 %}
+{% for r in squid_refresh_patterns %}
+{% set ns.reg = [ r.regex   |          length, ns.reg ] | max %}
+{% set ns.min = [ r.min     | string | length, ns.min ] | max %}
+{% set ns.pct = [ r.percent | string | length, ns.pct ] | max %}
+{% set ns.max = [ r.max     | string | length, ns.max ] | max %}
+{% endfor %}
+{% for r in squid_refresh_patterns %}
+{% set r_percent = r.percent ~ '%' %}
+refresh_pattern {{ "{1:<{0}}".format(ns.reg+4, r.regex) }}{{ "{1:<{0}}".format(ns.min+4, r.min) }}{{ "{1:<{0}}".format(ns.pct+4, r_percent) }}{{ "{1:<{0}}".format(ns.max+4, r.max) }}{% if r.options is defined %}{{ r.options }}{% endif +%}
+{% endfor %}
 {% endif %}
 
 {% if squid_logformat is defined %}
