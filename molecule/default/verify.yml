@@ -5,7 +5,7 @@
   gather_facts: no
 
   tasks:
-    - name: test the proxy
+    - name: Test the proxy
       ansible.builtin.uri:
         url: "http://www.google.com/"
       environment:
