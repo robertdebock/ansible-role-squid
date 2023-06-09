@@ -30,10 +30,13 @@
     that:
       - item.name is defined
       - item.name is string
+      - item.name is not none
       - item.classifier is defined
       - item.classifier is string
+      - item.classifier is not none
       - item.value is defined
       - item.value is string
+      - item.value is not none
     quiet: yes
   loop: "{{ squid_acls }}"
   loop_control:
@@ -46,6 +49,7 @@
     that:
       - item.state is defined
       - item.state is string
+      - item.state is not none
       - item.acls is defined
       - item.acls is iterable
     quiet: yes
@@ -68,6 +72,7 @@
     that:
       - item.acl is defined
       - item.acl is string
+      - item.acl is not none
       - item.decision is defined
       - item.decision is string
       - item.decision in [ "allow", "deny" ]
