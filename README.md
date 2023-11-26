@@ -1,4 +1,4 @@
-# Ansible role [squid](#squid)
+# [Ansible role squid](#squid)
 
 Install and configure squid on your system
 
