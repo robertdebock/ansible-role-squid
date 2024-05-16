@@ -1,6 +1,6 @@
 {{ ansible_managed | comment }}
 
-http_port {{ squid_port }}
+http_port {% if squid_host is defined %}{{ squid_host }}:{% endif %}{{ squid_port }}
 
 cache_effective_user {{ squid_user }}
 cache_effective_group {{ squid_group }}
