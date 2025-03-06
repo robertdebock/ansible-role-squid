@@ -5,7 +5,7 @@
   gather_facts: true
 
   roles:
-    - role: ansible-role-squid
+    - role: robertdebock.squid
       squid_cache_dir: "aufs /var/spool/squid 16000 16 256 max-size=8589934592"
       squid_cache_replacement_policy: heap LFUDA
       squid_maximum_object_size_mb: 256
