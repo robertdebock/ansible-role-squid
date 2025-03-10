@@ -1,5 +1,14 @@
 ---
 
+- name: assert | Test squid_host
+  ansible.builtin.assert:
+    that:
+      - squid_host is string
+      - squid_host is not none
+    quiet: true
+  when:
+    - squid_host is defined
+
 - name: assert | Test squid_port
   ansible.builtin.assert:
     that:
