@@ -110,6 +110,12 @@ never_direct {{ never_direct.decision }} {{ never_direct.aclname }}
 {% endfor %}
 {% endif %}
 
+{% if squid_cache_rules is defined %}
+{% for rule in squid_cache_rules %}
+cache {{ rule.decision }} {{ rule.aclname }}
+{% endfor %}
+{% endif %}
+
 {% if squid_cache_peers is defined %}
 {% for cache_peer in squid_cache_peers %}
 cache_peer {{ cache_peer.hostname }} {{ cache_peer.type }} {{ cache_peer.proxyport }} {{ cache_peer.icpport }} {{ cache_peer.options }}
