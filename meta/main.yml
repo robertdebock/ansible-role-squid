@@ -23,6 +23,12 @@ galaxy_info:
     - name: Ubuntu
       versions:
         - all
+    - name: SLES
+      versions:
+        - "16"
+    - name: openSUSE
+      versions:
+        - all
 
   galaxy_tags:
     - proxy
